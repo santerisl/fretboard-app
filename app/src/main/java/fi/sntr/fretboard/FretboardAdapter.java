@@ -8,17 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import java.util.List;
-
 import fi.sntr.fretboard.FretboardFragment.FretListener;
 
 public class FretboardAdapter extends RecyclerView.Adapter<FretboardAdapter.ViewHolder> {
 
-    private final List<Integer> mValues;
+    private final Instrument mInstrument;
     private final FretListener mListener;
 
-    public FretboardAdapter(List<Integer> items, FretListener listener) {
-        mValues = items;
+    public FretboardAdapter(Instrument instrument, FretListener listener) {
+        mInstrument = instrument;
         mListener = listener;
     }
 
@@ -27,13 +25,15 @@ public class FretboardAdapter extends RecyclerView.Adapter<FretboardAdapter.View
         Context context = parent.getContext();
         View view = LayoutInflater.from(context)
                 .inflate(R.layout.fragment_fret, parent, false);
+
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        final int value = mValues.get(position);
-        holder.mFretButton.setText(mValues.get(position).toString());
+        final int value = position;
+        String text = mInstrument.getNote(position);
+        holder.mFretButton.setText(text);
 
         holder.mFretButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,7 +47,7 @@ public class FretboardAdapter extends RecyclerView.Adapter<FretboardAdapter.View
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return mInstrument.getNoteCount();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

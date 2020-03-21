@@ -75,7 +75,9 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> {
         }
 
         void setNoteName(int position) {
-            mFretButton.setText(mInstrument.getNote(position));
+            int string = (position - mInstrument.getFretCount()) / mInstrument.getFretCount();
+            int fret = (position - mInstrument.getFretCount()) % mInstrument.getFretCount();
+            mFretButton.setText(mInstrument.getNote(string, fret));
         }
     }
 

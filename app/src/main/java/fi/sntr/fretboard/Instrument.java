@@ -16,21 +16,13 @@ public class Instrument {
         this.fretCount = fretCount;
     }
 
-    public int getRootNote(int position) {
-        return rootNotes[(position - fretCount) / fretCount];
-    }
-
-    public int getFret(int position) {
-        return (position - fretCount) % fretCount;
-    }
-
     public int getNoteCount() {
         return fretCount * rootNotes.length;
     }
 
-    public String getNote(int position) {
-        int note = getRootNote(position) + getFret(position);
-        return noteNamesSharp[note % noteNamesSharp.length];
+    public String getNote(int string, int fret) {
+        int note = (rootNotes[string] + fret) % noteNamesSharp.length;
+        return noteNamesSharp[note];
     }
 
     public int getFretCount() {

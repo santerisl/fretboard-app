@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,6 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     public FretboardAdapter(Instrument instrument) {
         mInstrument = instrument;
-        //mListener = listener;
     }
 
     @NonNull
@@ -30,7 +30,6 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> {
         if(viewType == TYPE_NUMBER) {
             View view = LayoutInflater.from(context)
                     .inflate(R.layout.fragment_fret_number, parent, false);
-
             return new NumberViewHolder(view);
         } else {
             View view = LayoutInflater.from(context)
@@ -38,16 +37,29 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> {
 
             return new FretViewHolder(view);
         }
-
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         if (getItemViewType(position) == TYPE_NUMBER) {
             ((NumberViewHolder) holder).setNumber(position);
         } else {
-            final int value = position; // - mInstrument.getFretCount();
-            ((FretViewHolder) holder).setNoteName(value);
+            final FretViewHolder fH = (FretViewHolder) holder;
+            fH.setNoteName(position);
+
+            fH.mFretButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int frets = mInstrument.getFretCount();
+                    int stringPosition = frets + frets * fH.string;
+
+                    int oldPosition = stringPosition + mInstrument.getSelected(fH.string);
+                    int newFret = mInstrument.setSelected(fH.string, fH.fret);
+                    int newPosition = stringPosition + newFret;
+                    notifyItemChanged(oldPosition);
+                    notifyItemChanged(newPosition);
+                }
+            });
         }
     }
 
@@ -55,7 +67,6 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> {
     public int getItemViewType(int position) {
         if (position < mInstrument.getFretCount()) {
             return TYPE_NUMBER;
-
         } else {
             return TYPE_FRET;
         }
@@ -67,7 +78,9 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> {
     }
 
     public class FretViewHolder extends ViewHolder {
-        private final Button mFretButton;
+        final Button mFretButton;
+        int string;
+        int fret;
 
         FretViewHolder(View view) {
             super(view);
@@ -75,9 +88,13 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> {
         }
 
         void setNoteName(int position) {
-            int string = (position - mInstrument.getFretCount()) / mInstrument.getFretCount();
-            int fret = (position - mInstrument.getFretCount()) % mInstrument.getFretCount();
-            mFretButton.setText(mInstrument.getNote(string, fret));
+            string = (position - mInstrument.getFretCount()) / mInstrument.getFretCount();
+            fret = (position - mInstrument.getFretCount()) % mInstrument.getFretCount();
+            String text = mInstrument.getNote(string, fret);
+            if(mInstrument.isSelected(string, fret)) {
+                text += "!";
+            }
+            mFretButton.setText(text);
         }
     }
 

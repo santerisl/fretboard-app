@@ -1,5 +1,9 @@
 package fi.sntr.fretboard;
 
+import android.util.Log;
+
+import java.util.Arrays;
+
 public class Instrument {
 
     public static String[] noteNamesSharp = {
@@ -23,6 +27,19 @@ public class Instrument {
     public String getNote(int string, int fret) {
         int note = (rootNotes[string] + fret) % noteNamesSharp.length;
         return noteNamesSharp[note];
+    }
+
+    public int setSelected(int string, int fret) {
+        selectedFrets[string] = selectedFrets[string] == fret ? 0 : fret;
+        return selectedFrets[string];
+    }
+
+    public int getSelected(int string) {
+        return selectedFrets[string];
+    }
+
+    public boolean isSelected(int string, int fret) {
+        return selectedFrets[string] == fret;
     }
 
     public int getFretCount() {

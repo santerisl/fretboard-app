@@ -8,18 +8,20 @@ public class Instrument {
 
     private int fretCount;
     private int[] rootNotes;
+    private int[] selectedFrets;
 
     public Instrument(int fretCount, int ...rootNotes) {
         this.rootNotes = rootNotes;
+        this.selectedFrets = new int[rootNotes.length];
         this.fretCount = fretCount;
     }
 
     public int getRootNote(int position) {
-        return rootNotes[position / fretCount];
+        return rootNotes[(position - fretCount) / fretCount];
     }
 
     public int getFret(int position) {
-        return position % fretCount;
+        return (position - fretCount) % fretCount;
     }
 
     public int getNoteCount() {
@@ -29,5 +31,9 @@ public class Instrument {
     public String getNote(int position) {
         int note = getRootNote(position) + getFret(position);
         return noteNamesSharp[note % noteNamesSharp.length];
+    }
+
+    public int getFretCount() {
+        return fretCount;
     }
 }

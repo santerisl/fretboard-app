@@ -7,14 +7,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 
 public class FretboardFragment extends Fragment {
-    private FretListener mListener;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView mRecyclerView;
+
     public FretboardFragment() {}
 
     @SuppressWarnings("unused")
@@ -33,7 +34,7 @@ public class FretboardFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_fretboard, container, false);
 
-        RecyclerView mRecyclerView = view.findViewById(R.id.recycler_view);
+        mRecyclerView = view.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 13);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -44,18 +45,17 @@ public class FretboardFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof FretListener) {
-            mListener = (FretListener) context;
+    }
+
+    public void setInstrument(Instrument instrument) {
+        if(mAdapter == null) {
+            mAdapter = new FretboardAdapter(instrument);
+            mRecyclerView.setAdapter(mAdapter);
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
-    }
-
-    public interface FretListener {
-        void onClick(Integer item);
     }
 }

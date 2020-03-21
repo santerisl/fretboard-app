@@ -12,14 +12,16 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
         <fragment
             android:id="@+id/fretboard_view"
+            android:name="fi.sntr.fretboard.FretboardFragment"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:name="fi.sntr.fretboard.FretboardFragment" />
+            android:layout_height="wrap_content" />
     </HorizontalScrollView>
 
     <Button
+        android:id="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Hello fretboard"

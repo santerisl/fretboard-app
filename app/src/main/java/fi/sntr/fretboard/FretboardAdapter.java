@@ -1,63 +1,94 @@
 package fi.sntr.fretboard;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
-import fi.sntr.fretboard.FretboardFragment.FretListener;
-
-public class FretboardAdapter extends RecyclerView.Adapter<FretboardAdapter.ViewHolder> {
+public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     private final Instrument mInstrument;
-    private final FretListener mListener;
 
-    public FretboardAdapter(Instrument instrument, FretListener listener) {
+    private static int TYPE_NUMBER = 1;
+    private static int TYPE_FRET = 2;
+
+    public FretboardAdapter(Instrument instrument) {
         mInstrument = instrument;
-        mListener = listener;
+        //mListener = listener;
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
-        View view = LayoutInflater.from(context)
-                .inflate(R.layout.fragment_fret, parent, false);
+        if(viewType == TYPE_NUMBER) {
+            View view = LayoutInflater.from(context)
+                    .inflate(R.layout.fragment_fret_number, parent, false);
 
-        return new ViewHolder(view);
+            return new NumberViewHolder(view);
+        } else {
+            View view = LayoutInflater.from(context)
+                    .inflate(R.layout.fragment_fret, parent, false);
+
+            return new FretViewHolder(view);
+        }
+
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        final int value = position;
-        String text = mInstrument.getNote(position);
-        holder.mFretButton.setText(text);
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        if (getItemViewType(position) == TYPE_NUMBER) {
+            ((NumberViewHolder) holder).setNumber(position);
+        } else {
+            final int value = position; // - mInstrument.getFretCount();
+            ((FretViewHolder) holder).setNoteName(value);
+        }
+    }
 
-        holder.mFretButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != mListener) {
-                    mListener.onClick(value);
-                }
-            }
-        });
+    @Override
+    public int getItemViewType(int position) {
+        if (position < mInstrument.getFretCount()) {
+            return TYPE_NUMBER;
+
+        } else {
+            return TYPE_FRET;
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mInstrument.getNoteCount();
+        return mInstrument.getNoteCount() + mInstrument.getFretCount();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final Button mFretButton;
+    public class FretViewHolder extends ViewHolder {
+        private final Button mFretButton;
 
-        public ViewHolder(View view) {
+        FretViewHolder(View view) {
             super(view);
-            mView = view;
             mFretButton = view.findViewById(R.id.fret_button);
+        }
+
+        void setNoteName(int position) {
+            mFretButton.setText(mInstrument.getNote(position));
+        }
+    }
+
+    public static class NumberViewHolder extends ViewHolder {
+        private final TextView mFretNumber;
+
+        NumberViewHolder(View view) {
+            super(view);
+            mFretNumber = view.findViewById(R.id.fret_number);
+        }
+
+        void setNumber(int position) {
+            mFretNumber.setText(Integer.toString(position));
         }
     }
 }

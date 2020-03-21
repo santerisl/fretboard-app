@@ -1,14 +1,15 @@
 package fi.sntr.fretboard;
 
-import android.util.Log;
-
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Instrument {
 
     public static String[] noteNamesSharp = {
             "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"
     };
+
+    private List<SelectedChangeListener> listeners = new ArrayList<>();
 
     private int fretCount;
     private int[] rootNotes;
@@ -31,6 +32,11 @@ public class Instrument {
 
     public int setSelected(int string, int fret) {
         selectedFrets[string] = selectedFrets[string] == fret ? 0 : fret;
+
+        for(SelectedChangeListener listener: listeners) {
+            listener.onSelectedChange(string, fret, selectedFrets[string]);
+        }
+
         return selectedFrets[string];
     }
 
@@ -44,5 +50,17 @@ public class Instrument {
 
     public int getFretCount() {
         return fretCount;
+    }
+
+    public int getStringCount() {
+        return rootNotes.length;
+    }
+
+    public void setSelectedChangeListener(SelectedChangeListener listener) {
+        listeners.add(listener);
+    }
+
+    interface SelectedChangeListener {
+        void onSelectedChange(int string, int oldFret, int newFret);
     }
 }

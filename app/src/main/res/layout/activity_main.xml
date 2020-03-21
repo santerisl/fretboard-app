@@ -20,10 +20,11 @@
             android:layout_height="wrap_content" />
     </HorizontalScrollView>
 
-    <Button
-        android:id="@+id/button"
+    <TextView
+        android:id="@+id/selected_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textAlignment="center"
         android:text="Hello fretboard"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

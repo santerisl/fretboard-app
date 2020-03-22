@@ -5,12 +5,19 @@ import java.util.List;
 
 public class Instrument {
 
-    public static String[] noteNamesSharp = {
+    public static final int NOTE_COUNT = 12;
+
+    public static final String[] noteNamesSharp = {
             "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"
+    };
+
+    public static final String[] noteNamesFlat = {
+            "C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"
     };
 
     private List<InstrumentChangeListener> listeners = new ArrayList<>();
 
+    private boolean isSharp = true;
     private int fretCount;
     private int[] rootNotes;
     private int[] selectedFrets;
@@ -26,8 +33,8 @@ public class Instrument {
     }
 
     public String getNote(int string, int fret) {
-        int note = (rootNotes[string] + fret) % noteNamesSharp.length;
-        return noteNamesSharp[note];
+        int note = (rootNotes[string] + fret) % NOTE_COUNT;
+        return isSharp ? noteNamesSharp[note] : noteNamesFlat[note];
     }
 
     public void setSelected(int string, int fret) {
@@ -59,6 +66,14 @@ public class Instrument {
         listeners.add(listener);
     }
 
+    public void toggleSharp() {
+        isSharp = !isSharp;
+
+        for(InstrumentChangeListener listener: listeners) {
+            listener.onIsSharpChange(this.isSharp);
+        }
+    }
+
     public void setFretCount(int fretCount) {
         this.fretCount = fretCount;
 
@@ -76,5 +91,6 @@ public class Instrument {
     interface InstrumentChangeListener {
         void onSelectedChange(int string, int oldFret, int newFret);
         void onFretCountChange(int fretCount);
+        void onIsSharpChange(boolean isSharp);
     }
 }

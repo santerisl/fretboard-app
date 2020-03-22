@@ -31,7 +31,7 @@
         app:layout_constraintTop_toBottomOf="@+id/fretboard_scroll_view" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/button_add_frets"
         android:text="Frets++"
@@ -40,12 +40,22 @@
         app:layout_constraintTop_toBottomOf="@+id/selected_text" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/button_remove_frets"
         android:text="Frets--"
         android:onClick="removeFrets"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_add_frets" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_toggle_sharp"
+        android:text="# / b"
+        android:onClick="toggleSharpFlat"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_remove_frets" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -38,6 +38,11 @@ public class MainActivity extends AppCompatActivity {
             public void onFretCountChange(int fretCount) {
                 fretboard.getLayoutManager().setSpanCount(fretCount);
             }
+
+            @Override
+            public void onIsSharpChange(boolean isSharp) {
+
+            }
         });
     }
 
@@ -51,5 +56,9 @@ public class MainActivity extends AppCompatActivity {
         if(instrument.getFretCount() > 6) {
             instrument.setFretCount(instrument.getFretCount() - 1);
         }
+    }
+
+    public void toggleSharpFlat(View view) {
+        instrument.toggleSharp();
     }
 }

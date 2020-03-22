@@ -84,6 +84,11 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> implement
         notifyDataSetChanged();
     }
 
+    @Override
+    public void onIsSharpChange(boolean isSharp) {
+        notifyDataSetChanged();
+    }
+
     public class FretViewHolder extends ViewHolder {
         final Button mFretButton;
         int string;

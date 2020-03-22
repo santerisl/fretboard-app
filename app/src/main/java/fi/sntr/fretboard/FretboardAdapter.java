@@ -5,14 +5,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> {
+public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> implements Instrument.InstrumentChangeListener {
 
     private final Instrument mInstrument;
 
@@ -21,6 +20,7 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     public FretboardAdapter(Instrument instrument) {
         mInstrument = instrument;
+        mInstrument.setChangeListener(this);
     }
 
     @NonNull
@@ -50,14 +50,7 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> {
             fH.mFretButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int frets = mInstrument.getFretCount();
-                    int stringPosition = frets + frets * fH.string;
-
-                    int oldPosition = stringPosition + mInstrument.getSelected(fH.string);
-                    int newFret = mInstrument.setSelected(fH.string, fH.fret);
-                    int newPosition = stringPosition + newFret;
-                    notifyItemChanged(oldPosition);
-                    notifyItemChanged(newPosition);
+                    mInstrument.setSelected(fH.string, fH.fret);
                 }
             });
         }
@@ -75,6 +68,20 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> {
     @Override
     public int getItemCount() {
         return mInstrument.getNoteCount() + mInstrument.getFretCount();
+    }
+
+    @Override
+    public void onSelectedChange(int string, int oldFret, int newFret) {
+        int frets = mInstrument.getFretCount();
+        int stringPosition = frets + frets * string;
+
+        notifyItemChanged(stringPosition + oldFret);
+        notifyItemChanged(stringPosition + newFret);
+    }
+
+    @Override
+    public void onFretCountChange(int fretCount) {
+        notifyDataSetChanged();
     }
 
     public class FretViewHolder extends ViewHolder {

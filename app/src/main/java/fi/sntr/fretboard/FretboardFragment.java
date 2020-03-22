@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 public class FretboardFragment extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView mRecyclerView;
+    private RecyclerView.LayoutManager layoutManager;
 
     public FretboardFragment() {}
 
@@ -36,8 +37,7 @@ public class FretboardFragment extends Fragment {
 
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 13);
-        mRecyclerView.setLayoutManager(layoutManager);
+
 
         return view;
     }
@@ -51,7 +51,13 @@ public class FretboardFragment extends Fragment {
         if(mAdapter == null) {
             mAdapter = new FretboardAdapter(instrument);
             mRecyclerView.setAdapter(mAdapter);
+            layoutManager = new GridLayoutManager(getContext(), instrument.getFretCount());
+            mRecyclerView.setLayoutManager(layoutManager);
         }
+    }
+
+    public GridLayoutManager getLayoutManager() {
+        return (GridLayoutManager) layoutManager;
     }
 
     @Override

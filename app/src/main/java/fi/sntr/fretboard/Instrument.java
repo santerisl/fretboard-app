@@ -9,7 +9,7 @@ public class Instrument {
             "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"
     };
 
-    private List<SelectedChangeListener> listeners = new ArrayList<>();
+    private List<InstrumentChangeListener> listeners = new ArrayList<>();
 
     private int fretCount;
     private int[] rootNotes;
@@ -30,14 +30,13 @@ public class Instrument {
         return noteNamesSharp[note];
     }
 
-    public int setSelected(int string, int fret) {
+    public void setSelected(int string, int fret) {
+        int oldFret = selectedFrets[string];
         selectedFrets[string] = selectedFrets[string] == fret ? 0 : fret;
 
-        for(SelectedChangeListener listener: listeners) {
-            listener.onSelectedChange(string, fret, selectedFrets[string]);
+        for(InstrumentChangeListener listener: listeners) {
+            listener.onSelectedChange(string, oldFret, selectedFrets[string]);
         }
-
-        return selectedFrets[string];
     }
 
     public int getSelected(int string) {
@@ -56,11 +55,26 @@ public class Instrument {
         return rootNotes.length;
     }
 
-    public void setSelectedChangeListener(SelectedChangeListener listener) {
+    public void setChangeListener(InstrumentChangeListener listener) {
         listeners.add(listener);
     }
 
-    interface SelectedChangeListener {
+    public void setFretCount(int fretCount) {
+        this.fretCount = fretCount;
+
+        for(int i = 0; i < selectedFrets.length; i++) {
+            if(selectedFrets[i] >= fretCount) {
+                setSelected(i, fretCount - 1);
+            }
+        }
+
+        for(InstrumentChangeListener listener: listeners) {
+            listener.onFretCountChange(this.fretCount);
+        }
+    }
+
+    interface InstrumentChangeListener {
         void onSelectedChange(int string, int oldFret, int newFret);
+        void onFretCountChange(int fretCount);
     }
 }

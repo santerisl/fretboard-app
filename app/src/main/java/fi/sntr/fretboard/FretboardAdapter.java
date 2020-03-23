@@ -133,9 +133,7 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> implement
             string = (position - mInstrument.getFretCount()) / mInstrument.getFretCount();
             fret = (position - mInstrument.getFretCount()) % mInstrument.getFretCount();
             String text = mInstrument.getNote(string, fret);
-            if(mInstrument.isSelected(string, fret)) {
-                text += "!";
-            }
+            mFretButton.setSelected(mInstrument.isSelected(string, fret));
             mFretButton.setText(text);
         }
     }

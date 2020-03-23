@@ -32,8 +32,12 @@ public class Instrument {
         return fretCount * rootNotes.length;
     }
 
+    public int getNoteNumber(int string, int fret) {
+        return (rootNotes[string] + fret) % NOTE_COUNT;
+    }
+
     public String getNote(int string, int fret) {
-        int note = (rootNotes[string] + fret) % NOTE_COUNT;
+        int note = getNoteNumber(string, fret);
         return isSharp ? noteNamesSharp[note] : noteNamesFlat[note];
     }
 
@@ -75,6 +79,7 @@ public class Instrument {
     }
 
     public void setFretCount(int fretCount) {
+        int oldFretCount = this.fretCount;
         this.fretCount = fretCount;
 
         for(int i = 0; i < selectedFrets.length; i++) {
@@ -84,13 +89,13 @@ public class Instrument {
         }
 
         for(InstrumentChangeListener listener: listeners) {
-            listener.onFretCountChange(this.fretCount);
+            listener.onFretCountChange(oldFretCount, this.fretCount);
         }
     }
 
     interface InstrumentChangeListener {
         void onSelectedChange(int string, int oldFret, int newFret);
-        void onFretCountChange(int fretCount);
+        void onFretCountChange(int oldFretCount, int newFretCount);
         void onIsSharpChange(boolean isSharp);
     }
 }

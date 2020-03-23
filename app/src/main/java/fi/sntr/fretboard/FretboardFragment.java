@@ -38,7 +38,6 @@ public class FretboardFragment extends Fragment {
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
 
-
         return view;
     }
 

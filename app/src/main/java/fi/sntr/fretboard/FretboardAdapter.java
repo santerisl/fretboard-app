@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> implement
 
     private static int TYPE_NUMBER = 1;
     private static int TYPE_FRET = 2;
+
+    private final int[] accidentalPositions = {1, 3, 6, 8, 10};
 
     public FretboardAdapter(Instrument instrument) {
         mInstrument = instrument;
@@ -70,6 +73,11 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> implement
         return mInstrument.getNoteCount() + mInstrument.getFretCount();
     }
 
+    private int getFretPosition(int string, int fret) {
+        int frets = mInstrument.getFretCount();
+        return frets * (string + 1) + fret;
+    }
+
     @Override
     public void onSelectedChange(int string, int oldFret, int newFret) {
         int frets = mInstrument.getFretCount();
@@ -80,13 +88,31 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> implement
     }
 
     @Override
-    public void onFretCountChange(int fretCount) {
-        notifyDataSetChanged();
+    public void onFretCountChange(int oldFretCount, int newFretCount) {
+        for(int i = 0; i < mInstrument.getStringCount() + 1; i++) {
+            int change = newFretCount - oldFretCount;
+            int start = i * oldFretCount + oldFretCount + change * i;
+            if(change > 0) {
+                notifyItemRangeInserted(start, change);
+            }else if(change < 0) {
+                change = Math.abs(change);
+                notifyItemRangeRemoved(start - change, change);
+            }
+        }
     }
 
     @Override
     public void onIsSharpChange(boolean isSharp) {
-        notifyDataSetChanged();
+        for(int s = 0; s < mInstrument.getStringCount(); s++) {
+            for(int f = 0; f < mInstrument.getFretCount(); f++) {
+                int note = mInstrument.getNoteNumber(s, f);
+                for (int accidentalPosition : accidentalPositions) {
+                    if (accidentalPosition == note) {
+                        notifyItemChanged(getFretPosition(s, f));
+                    }
+                }
+            }
+        }
     }
 
     public class FretViewHolder extends ViewHolder {

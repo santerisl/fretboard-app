@@ -35,8 +35,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFretCountChange(int fretCount) {
-                fretboard.getLayoutManager().setSpanCount(fretCount);
+            public void onFretCountChange(int oldFretCount, int newFretCount) {
+                fretboard.getLayoutManager().setSpanCount(newFretCount);
             }
 
             @Override

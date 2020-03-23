@@ -43,7 +43,7 @@ public class Instrument {
 
     public void setSelected(int string, int fret) {
         int oldFret = selectedFrets[string];
-        selectedFrets[string] = selectedFrets[string] == fret ? 0 : fret;
+        selectedFrets[string] = selectedFrets[string] == fret ? -1 : fret;
 
         for(InstrumentChangeListener listener: listeners) {
             listener.onSelectedChange(string, oldFret, selectedFrets[string]);
@@ -84,7 +84,7 @@ public class Instrument {
 
         for(int i = 0; i < selectedFrets.length; i++) {
             if(selectedFrets[i] >= fretCount) {
-                setSelected(i, fretCount - 1);
+                setSelected(i, -1);
             }
         }
 

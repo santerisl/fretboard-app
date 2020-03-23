@@ -28,8 +28,12 @@ public class MainActivity extends AppCompatActivity {
             public void onSelectedChange(int string, int oldFret, int newFret) {
                 String text = "";
                 for(int i = 0; i < instrument.getStringCount(); i++) {
-                    text += instrument.getNote(i, instrument.getSelected(i));
-                    text += i < instrument.getStringCount() - 1 ? "  |  ": "";
+                    if(instrument.getSelected(i) >= 0) {
+                        text += instrument.getNote(i, instrument.getSelected(i)) + " | ";
+                    }
+                }
+                if(text.length() >= 3) {
+                    text = text.substring(0, text.length() - 2);
                 }
                 selectedText.setText(text);
             }

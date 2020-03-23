@@ -83,8 +83,12 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> implement
         int frets = mInstrument.getFretCount();
         int stringPosition = frets + frets * string;
 
-        notifyItemChanged(stringPosition + oldFret);
-        notifyItemChanged(stringPosition + newFret);
+        if(oldFret >= 0) {
+            notifyItemChanged(stringPosition + oldFret);
+        }
+        if(newFret >= 0) {
+            notifyItemChanged(stringPosition + newFret);
+        }
     }
 
     @Override

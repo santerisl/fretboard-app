@@ -3,6 +3,7 @@ package fi.sntr.fretboard;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import fi.sntr.fretboard.music.Instrument;
 
 
 public class FretboardFragment extends Fragment {
@@ -21,8 +24,7 @@ public class FretboardFragment extends Fragment {
 
     @SuppressWarnings("unused")
     public static FretboardFragment newInstance() {
-        FretboardFragment fragment = new FretboardFragment();
-        return fragment;
+        return new FretboardFragment();
     }
 
     @Override
@@ -42,11 +44,11 @@ public class FretboardFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
     }
 
-    public void setInstrument(Instrument instrument) {
+    void setInstrument(Instrument instrument) {
         if(mAdapter == null) {
             mAdapter = new FretboardAdapter(instrument);
             mRecyclerView.setAdapter(mAdapter);
@@ -55,7 +57,7 @@ public class FretboardFragment extends Fragment {
         }
     }
 
-    public GridLayoutManager getLayoutManager() {
+    GridLayoutManager getLayoutManager() {
         return (GridLayoutManager) layoutManager;
     }
 

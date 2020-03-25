@@ -1,31 +1,21 @@
-package fi.sntr.fretboard;
+package fi.sntr.fretboard.music;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Instrument {
-
-    public static final int NOTE_COUNT = 12;
-
-    public static final String[] noteNamesSharp = {
-            "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"
-    };
-
-    public static final String[] noteNamesFlat = {
-            "C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"
-    };
-
     private List<InstrumentChangeListener> listeners = new ArrayList<>();
 
     private boolean isSharp = true;
-    private int fretCount;
-    private int[] rootNotes;
-    private int[] selectedFrets;
+    private int fretCount = 1;
+    private int[] rootNotes = new int[0];
+    private int[] selectedFrets = new int[0];
 
-    public Instrument(int fretCount, int ...rootNotes) {
+    public Instrument() {}
+
+    public void setRootNotes(int ...rootNotes) {
         this.rootNotes = rootNotes;
         this.selectedFrets = new int[rootNotes.length];
-        this.fretCount = fretCount;
     }
 
     public int getNoteCount() {
@@ -33,12 +23,12 @@ public class Instrument {
     }
 
     public int getNoteNumber(int string, int fret) {
-        return (rootNotes[string] + fret) % NOTE_COUNT;
+        return (rootNotes[string] + fret) % Music.NOTE_COUNT;
     }
 
     public String getNote(int string, int fret) {
         int note = getNoteNumber(string, fret);
-        return isSharp ? noteNamesSharp[note] : noteNamesFlat[note];
+        return isSharp ? Music.NAMES_SHARP[note] : Music.NAMES_FLAT[note];
     }
 
     public void setSelected(int string, int fret) {
@@ -93,7 +83,7 @@ public class Instrument {
         }
     }
 
-    interface InstrumentChangeListener {
+    public interface InstrumentChangeListener {
         void onSelectedChange(int string, int oldFret, int newFret);
         void onFretCountChange(int oldFretCount, int newFretCount);
         void onIsSharpChange(boolean isSharp);

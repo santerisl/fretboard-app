@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Button xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.AppCompatButton
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fret_button"
-    android:background="@drawable/button_fret"
     android:layout_width="50dp"
     android:layout_height="40dp"
-    android:textAllCaps="false" >
+    android:background="@drawable/button_fret"
+    android:textAllCaps="false">
 
-</Button>
+</androidx.appcompat.widget.AppCompatButton>

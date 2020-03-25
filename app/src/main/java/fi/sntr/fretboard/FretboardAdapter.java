@@ -5,12 +5,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import fi.sntr.fretboard.music.Instrument;
 
 public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> implements Instrument.InstrumentChangeListener {
 
@@ -21,7 +22,7 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> implement
 
     private final int[] accidentalPositions = {1, 3, 6, 8, 10};
 
-    public FretboardAdapter(Instrument instrument) {
+    FretboardAdapter(Instrument instrument) {
         mInstrument = instrument;
         mInstrument.setChangeListener(this);
     }
@@ -50,11 +51,8 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> implement
             final FretViewHolder fH = (FretViewHolder) holder;
             fH.setNoteName(position);
 
-            fH.mFretButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mInstrument.setSelected(fH.string, fH.fret);
-                }
+            fH.mFretButton.setOnClickListener(v -> {
+                mInstrument.setSelected(fH.string, fH.fret);
             });
         }
     }
@@ -119,7 +117,7 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> implement
         }
     }
 
-    public class FretViewHolder extends ViewHolder {
+    class FretViewHolder extends ViewHolder {
         final Button mFretButton;
         int string;
         int fret;
@@ -138,7 +136,7 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> implement
         }
     }
 
-    public static class NumberViewHolder extends ViewHolder {
+    static class NumberViewHolder extends ViewHolder {
         private final TextView mFretNumber;
 
         NumberViewHolder(View view) {

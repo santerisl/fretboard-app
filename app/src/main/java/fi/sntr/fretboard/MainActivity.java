@@ -1,68 +1,89 @@
 package fi.sntr.fretboard;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
 
-import fi.sntr.fretboard.Instrument.InstrumentChangeListener;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
+
+import fi.sntr.fretboard.music.Instrument;
+import fi.sntr.fretboard.music.Instrument.InstrumentChangeListener;
+import fi.sntr.fretboard.tabs.DefaultFragment;
+import fi.sntr.fretboard.tabs.HighlightFragment;
+import fi.sntr.fretboard.tabs.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Instrument instrument;
+    public final Instrument instrument = new Instrument();
+
+    private final String[] TAB_NAMES = {"Default", "Highlight", "Settings"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final FretboardFragment fretboard = (FretboardFragment) getSupportFragmentManager().findFragmentById(R.id.fretboard_view);
-        final TextView selectedText = findViewById(R.id.selected_text);
+        instrument.setFretCount(12);
+        instrument.setRootNotes(4, 9, 2, 7);
 
-        instrument = new Instrument(13,4, 9, 2, 7);
-        fretboard.setInstrument(instrument);
+        final FretboardFragment fretboard = (FretboardFragment) getSupportFragmentManager().findFragmentById(R.id.fretboard_view);
+        if(fretboard != null) {
+            fretboard.setInstrument(instrument);
+        }
+
+        TabAdapter tabAdapter = new TabAdapter();
+        ViewPager2 viewPager = findViewById(R.id.view_pager);
+        viewPager.setAdapter(tabAdapter);
+
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+
+        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+            tab.setText(TAB_NAMES[position]);
+        }).attach();
 
         instrument.setChangeListener(new InstrumentChangeListener() {
             @Override
-            public void onSelectedChange(int string, int oldFret, int newFret) {
-                String text = "";
-                for(int i = 0; i < instrument.getStringCount(); i++) {
-                    if(instrument.getSelected(i) >= 0) {
-                        text += instrument.getNote(i, instrument.getSelected(i)) + " | ";
-                    }
-                }
-                if(text.length() >= 3) {
-                    text = text.substring(0, text.length() - 2);
-                }
-                selectedText.setText(text);
-            }
+            public void onSelectedChange(int string, int oldFret, int newFret) {}
 
             @Override
             public void onFretCountChange(int oldFretCount, int newFretCount) {
-                fretboard.getLayoutManager().setSpanCount(newFretCount);
+                if (fretboard != null) {
+                    fretboard.getLayoutManager().setSpanCount(newFretCount);
+                }
             }
 
             @Override
-            public void onIsSharpChange(boolean isSharp) {
-
-            }
+            public void onIsSharpChange(boolean isSharp) {}
         });
     }
 
-    public void addFrets(View view) {
-        if(instrument.getFretCount() < 19) {
-            instrument.setFretCount(instrument.getFretCount() + 1);
+    class TabAdapter extends FragmentStateAdapter {
+        TabAdapter() {
+            super(getSupportFragmentManager(), getLifecycle());
         }
-    }
 
-    public void removeFrets(View view) {
-        if(instrument.getFretCount() > 6) {
-            instrument.setFretCount(instrument.getFretCount() - 1);
+        @NonNull
+        @Override
+        public Fragment createFragment(int position) {
+            switch (position) {
+                case 2:
+                    return new SettingsFragment();
+                case 1:
+                    return new HighlightFragment();
+                case 0:
+                default:
+                    return new DefaultFragment();
+            }
         }
-    }
 
-    public void toggleSharpFlat(View view) {
-        instrument.toggleSharp();
+        @Override
+        public int getItemCount() {
+            return TAB_NAMES.length;
+        }
     }
 }

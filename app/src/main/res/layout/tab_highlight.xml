@@ -6,20 +6,37 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/notes_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Note"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/chords_text"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/notes_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/notes_text"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/chords_view" />
+
+    <TextView
         android:id="@+id/chords_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Chords"
-        android:textAlignment="center"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintLeft_toRightOf="@id/notes_text"
+        app:layout_constraintRight_toLeftOf="@id/scales_text"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chords_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/chords_text"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/notes_view"
         app:layout_constraintRight_toLeftOf="@id/scales_view" />
 
     <TextView
@@ -27,7 +44,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Scales"
-        android:textAlignment="center"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toRightOf="@id/chords_text"
         app:layout_constraintRight_toRightOf="parent" />

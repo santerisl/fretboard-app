@@ -1,23 +1,17 @@
 package fi.sntr.fretboard.music;
 
-import android.util.Log;
-
 import java.util.Map;
 import java.util.LinkedHashMap;
 
 public class Music {
 
-    public Music() {
-        Log.d("Debug", "Music contructor");
-    }
-
     static final int NOTE_COUNT = 12;
 
-    static final String[] NAMES_SHARP = {
+    public static final String[] NAMES_SHARP = {
             "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"
     };
 
-    static final String[] NAMES_FLAT = {
+    public static final String[] NAMES_FLAT = {
             "C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"
     };
 
@@ -26,68 +20,56 @@ public class Music {
             "8", "b9", "9", "b10", "10", "11", "b12", "12", "b13", "13"
     };
 
-    public static Map<String, int[]> CHORDS = createChordsMap();
+    public static final NoteGroup[] CHORDS = {
+            new NoteGroup("", 0, 4, 7),
+            new NoteGroup("m", 0, 3, 7),
+            new NoteGroup("dim", 0, 3, 6),
+            new NoteGroup("dim7", 0, 3, 6, 9),
+            new NoteGroup("m7b5", 0, 3, 6, 10),
+            new NoteGroup("aug", 0, 4, 8),
+            new NoteGroup("5", 0, 7),
+            new NoteGroup("7", 0, 4, 7, 10),
+            new NoteGroup("m7", 0, 3, 7, 10),
+            new NoteGroup("maj7", 0, 4, 7, 11),
+            new NoteGroup("m/maj7", 0, 3, 7, 11),
+            new NoteGroup("sus4", 0, 5, 7),
+            new NoteGroup("sus2", 0, 2, 7),
+            new NoteGroup("7sus4", 0, 5, 7, 10),
+            new NoteGroup("7sus2", 0, 2, 7, 10),
+            new NoteGroup("add2", 0, 2, 4, 7),
+            new NoteGroup("add9", 0, 4, 7, 14),
+            new NoteGroup("add4", 0, 4, 5, 7),
+            new NoteGroup("6", 0, 4, 7, 9),
+            new NoteGroup("m6", 0, 3, 7, 9),
+            new NoteGroup("6/9", 0, 4, 7, 9, 14),
+            new NoteGroup("9", 0, 4, 7, 10, 14),
+            new NoteGroup("m9", 0, 3, 7, 10, 14),
+            new NoteGroup("maj9", 0, 4, 7, 11, 14),
+            new NoteGroup("11", 0, 4, 7, 10, 14, 17),
+            new NoteGroup("m11", 0, 3, 7, 10, 14, 17),
+            new NoteGroup("maj11", 0, 4, 7, 11, 14, 17),
+            new NoteGroup("13", 0, 4, 7, 10, 14, 17, 21),
+            new NoteGroup("m13", 0, 3, 7, 10, 14, 17, 21),
+            new NoteGroup("maj13", 0, 4, 7, 11, 14, 17, 21),
+            new NoteGroup("7#9", 0, 4, 7, 10, 15),
+            new NoteGroup("7b9", 0, 4, 7, 10, 13),
+            new NoteGroup("7#5", 0, 4, 8, 10),
+            new NoteGroup("7b5", 0, 4, 6, 10)
+    };
 
-    public static Map<String, int[]> SCALES = createScalesMap();
-
-    private static Map<String, int[]> createChordsMap() {
-        Map<String, int[]> chords = new LinkedHashMap<>();
-        add(chords, "", 0, 4, 7);
-        add(chords, "m", 0, 3, 7);
-        add(chords, "dim", 0, 3, 6);
-        add(chords, "dim7", 0, 3, 6, 9);
-        add(chords, "m7b5", 0, 3, 6, 10);
-        add(chords, "aug", 0, 4, 8);
-        add(chords, "5", 0, 7);
-        add(chords, "7", 0, 4, 7, 10);
-        add(chords, "m7", 0, 3, 7, 10);
-        add(chords, "maj7", 0, 4, 7, 11);
-        add(chords, "m/maj7", 0, 3, 7, 11);
-        add(chords, "sus4", 0, 5, 7);
-        add(chords, "sus2", 0, 2, 7);
-        add(chords, "7sus4", 0, 5, 7, 10);
-        add(chords, "7sus2", 0, 2, 7, 10);
-        add(chords, "add2", 0, 2, 4, 7);
-        add(chords, "add9", 0, 4, 7, 14);
-        add(chords, "add4", 0, 4, 5, 7);
-        add(chords, "6", 0, 4, 7, 9);
-        add(chords, "m6", 0, 3, 7, 9);
-        add(chords, "6/9", 0, 4, 7, 9, 14);
-        add(chords, "9", 0, 4, 7, 10, 14);
-        add(chords, "m9", 0, 3, 7, 10, 14);
-        add(chords, "maj9", 0, 4, 7, 11, 14);
-        add(chords, "11", 0, 4, 7, 10, 14, 17);
-        add(chords, "m11", 0, 3, 7, 10, 14, 17);
-        add(chords, "maj11", 0, 4, 7, 11, 14, 17);
-        add(chords, "13", 0, 4, 7, 10, 14, 17, 21);
-        add(chords, "m13", 0, 3, 7, 10, 14, 17, 21);
-        add(chords, "maj13", 0, 4, 7, 11, 14, 17, 21);
-        add(chords, "7#9", 0, 4, 7, 10, 15);
-        add(chords, "7b9", 0, 4, 7, 10, 13);
-        add(chords, "7#5", 0, 4, 8, 10);
-        add(chords, "7b5", 0, 4, 6, 10);
-        return chords;
-    }
-
-    private static Map<String, int[]> createScalesMap() {
-        Map<String, int[]> scales = new LinkedHashMap<>();
-        add(scales, "Chromatic", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
-        add(scales, "Major", 0, 2, 4, 5, 7, 9, 11);
-        add(scales, "Dorian", 0, 2, 3, 5, 7, 9, 10);
-        add(scales, "Phrygian", 0, 1, 3, 5, 7, 8, 10);
-        add(scales, "Lydian", 0, 2, 4, 6, 7, 9, 11);
-        add(scales, "Mixolydian", 0, 2, 4, 5, 7, 9, 10);
-        add(scales, "Aeolian", 0, 2, 3, 5, 7, 8, 10);
-        add(scales, "Locrian", 0, 1, 3, 5, 6, 8, 10);
-        add(scales, "Minor", 0, 2, 3, 5, 7, 8, 10);
-        add(scales, "Harmonic minor", 0, 2, 3, 5, 7, 8, 11);
-        add(scales, "Melodic minor", 0, 2, 3, 5, 7, 8, 9, 10, 11);
-        add(scales, "Pentatonic", 0, 2, 4, 7, 9);
-        add(scales, "Minor pentatonic", 0, 3, 5, 7, 10);
-        return scales;
-    }
-
-    private static void add(Map<String, int[]> map, String name, int... notes) {
-        map.put(name, notes);
-    }
+    public static final NoteGroup[] SCALES = {
+            new NoteGroup("Chromatic", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11),
+            new NoteGroup("Major", 0, 2, 4, 5, 7, 9, 11),
+            new NoteGroup("Dorian", 0, 2, 3, 5, 7, 9, 10),
+            new NoteGroup("Phrygian", 0, 1, 3, 5, 7, 8, 10),
+            new NoteGroup("Lydian", 0, 2, 4, 6, 7, 9, 11),
+            new NoteGroup("Mixolydian", 0, 2, 4, 5, 7, 9, 10),
+            new NoteGroup("Aeolian", 0, 2, 3, 5, 7, 8, 10),
+            new NoteGroup("Locrian", 0, 1, 3, 5, 6, 8, 10),
+            new NoteGroup("Minor", 0, 2, 3, 5, 7, 8, 10),
+            new NoteGroup("Harmonic minor", 0, 2, 3, 5, 7, 8, 11),
+            new NoteGroup("Melodic minor", 0, 2, 3, 5, 7, 8, 9, 10, 11),
+            new NoteGroup("Pentatonic", 0, 2, 4, 7, 9),
+            new NoteGroup("Minor pentatonic", 0, 3, 5, 7, 10)
+    };
 }

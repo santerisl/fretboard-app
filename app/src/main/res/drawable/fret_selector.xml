@@ -4,19 +4,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:color="@android:color/black"
-        android:drawable="@android:color/holo_blue_light"
+        android:color="@color/colorOnPrimary"
+        android:drawable="@color/colorPrimary"
         app:state_fret_selected="true"
         app:state_fret_faded="false"/>
 
     <item
-        android:color="@android:color/white"
-        android:drawable="@android:color/holo_red_dark"
+        android:color="@color/colorOnError"
+        android:drawable="@color/colorError"
         app:state_fret_selected="true"
         app:state_fret_faded="true"/>
 
     <item
-        android:color="@android:color/darker_gray"
+        android:color="@color/colorSecondaryVariant"
         android:drawable="@android:color/transparent"
         app:state_fret_selected="false"
         app:state_fret_faded="true" />

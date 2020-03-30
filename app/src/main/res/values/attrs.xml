@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="FretButton">
+        <attr name="state_fret_selected" format="boolean" />
+        <attr name="state_fret_faded" format="boolean" />
+    </declare-styleable>
+</resources>

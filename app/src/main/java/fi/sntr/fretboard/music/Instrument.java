@@ -48,6 +48,10 @@ public class Instrument {
         return selectedFrets[string] == fret;
     }
 
+    public boolean isHighlighted(int string, int fret) {
+        return true;
+    }
+
     public int getFretCount() {
         return fretCount;
     }

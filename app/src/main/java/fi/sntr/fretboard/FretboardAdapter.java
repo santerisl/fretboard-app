@@ -118,7 +118,7 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> implement
     }
 
     class FretViewHolder extends ViewHolder {
-        final Button mFretButton;
+        final FretButton mFretButton;
         int string;
         int fret;
 
@@ -131,7 +131,9 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> implement
             string = (position - mInstrument.getFretCount()) / mInstrument.getFretCount();
             fret = (position - mInstrument.getFretCount()) % mInstrument.getFretCount();
             String text = mInstrument.getNote(string, fret);
-            mFretButton.setSelected(mInstrument.isSelected(string, fret));
+
+            mFretButton.setFretSelected(mInstrument.isSelected(string, fret));
+            mFretButton.setFretFaded(!mInstrument.isHighlighted(string, fret));
             mFretButton.setText(text);
         }
     }

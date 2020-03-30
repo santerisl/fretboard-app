@@ -3,6 +3,7 @@ package fi.sntr.fretboard.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,9 +14,11 @@ import fi.sntr.fretboard.R;
 public class TextListAdapter<T extends Object> extends RecyclerView.Adapter<TextListAdapter.TextViewHolder> {
 
     private T[] mTextViews;
+    private OnItemClickListener mListener;
 
-    public TextListAdapter(T[] textViews) {
+    public TextListAdapter(T[] textViews, OnItemClickListener listener) {
         mTextViews = textViews;
+        mListener = listener;
     }
 
     @NonNull
@@ -29,6 +32,7 @@ public class TextListAdapter<T extends Object> extends RecyclerView.Adapter<Text
     @Override
     public void onBindViewHolder(@NonNull TextViewHolder holder, int position) {
         holder.textView.setText(mTextViews[position].toString());
+        holder.view.setOnClickListener(l -> mListener.onItemClick(position));
     }
 
     @Override
@@ -38,10 +42,16 @@ public class TextListAdapter<T extends Object> extends RecyclerView.Adapter<Text
 
     static class TextViewHolder extends RecyclerView.ViewHolder {
         TextView textView;
+        View view;
 
         public TextViewHolder(@NonNull View view) {
             super(view);
+            this.view = view;
             textView = view.findViewById(R.id.text_view);
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
     }
 }

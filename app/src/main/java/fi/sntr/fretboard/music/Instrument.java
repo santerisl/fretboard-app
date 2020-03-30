@@ -11,6 +11,9 @@ public class Instrument {
     private int[] rootNotes = new int[0];
     private int[] selectedFrets = new int[0];
 
+    private int highlightRoot = -1;
+    private NoteGroup highlight;
+
     public Instrument() {}
 
     public void setRootNotes(int ...rootNotes) {
@@ -40,6 +43,26 @@ public class Instrument {
         }
     }
 
+    public void setHighlight(NoteGroup noteGroup) {
+        this.highlight = noteGroup;
+        if(this.highlightRoot < 0) {
+            this.highlightRoot = 0;
+        }
+
+        for(InstrumentChangeListener listener: listeners) {
+            listener.onHighlightChange();
+        }
+    }
+
+    public void setHighlightRoot(int root) {
+        if(this.highlightRoot != root) {
+            this.highlightRoot = root;
+            for(InstrumentChangeListener listener: listeners) {
+                listener.onHighlightChange();
+            }
+        }
+    }
+
     public int getSelected(int string) {
         return selectedFrets[string];
     }
@@ -49,7 +72,14 @@ public class Instrument {
     }
 
     public boolean isHighlighted(int string, int fret) {
-        return true;
+        boolean isHighlighted = highlightRoot < 0 || highlight == null;
+        for(int i = 0; !isHighlighted && i < highlight.getIntervalCount(); i++) {
+            int note = highlight.get(i) + highlightRoot;
+            if(note == getNoteNumber(string, fret)) {
+                isHighlighted = true;
+            }
+        }
+        return isHighlighted;
     }
 
     public int getFretCount() {
@@ -91,5 +121,6 @@ public class Instrument {
         void onSelectedChange(int string, int oldFret, int newFret);
         void onFretCountChange(int oldFretCount, int newFretCount);
         void onIsSharpChange(boolean isSharp);
+        void onHighlightChange();
     }
 }

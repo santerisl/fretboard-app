@@ -59,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onIsSharpChange(boolean isSharp) {}
+
+            @Override
+            public void onHighlightChange() {}
         });
     }
 

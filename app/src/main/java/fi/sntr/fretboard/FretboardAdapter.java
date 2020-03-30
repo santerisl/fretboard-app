@@ -117,6 +117,11 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> implement
         }
     }
 
+    @Override
+    public void onHighlightChange() {
+        notifyDataSetChanged();
+    }
+
     class FretViewHolder extends ViewHolder {
         final FretButton mFretButton;
         int string;

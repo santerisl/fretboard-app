@@ -18,6 +18,7 @@ import fi.sntr.fretboard.R;
 import fi.sntr.fretboard.adapters.TextListAdapter;
 import fi.sntr.fretboard.music.Instrument;
 import fi.sntr.fretboard.music.Music;
+import fi.sntr.fretboard.music.NoteGroup;
 
 public class HighlightFragment extends Fragment {
 
@@ -30,17 +31,21 @@ public class HighlightFragment extends Fragment {
         View view = inflater.inflate(R.layout.tab_highlight, container, false);
 
         RecyclerView noteRecycler = view.findViewById(R.id.notes_view);
-        TextListAdapter mNotesAdapter = new TextListAdapter(Music.NAMES_SHARP);
+        TextListAdapter<String> mNotesAdapter = new TextListAdapter<>(Music.NAMES_SHARP,
+                (position) -> mInstrument.setHighlightRoot(position));
+
         noteRecycler.setAdapter(mNotesAdapter);
         noteRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
 
         RecyclerView chordsRecycler = view.findViewById(R.id.chords_view);
-        TextListAdapter mChordsAdapter = new TextListAdapter(Music.CHORDS);
+        TextListAdapter<NoteGroup> mChordsAdapter = new TextListAdapter<>(Music.CHORDS,
+                (position) -> mInstrument.setHighlight(Music.CHORDS[position]));
         chordsRecycler.setAdapter(mChordsAdapter);
         chordsRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
 
         RecyclerView scalesRecycler = view.findViewById(R.id.scales_view);
-        TextListAdapter mScalesAdapter = new TextListAdapter(Music.SCALES);
+        TextListAdapter<NoteGroup> mScalesAdapter = new TextListAdapter<>(Music.SCALES,
+                (position) -> mInstrument.setHighlight(Music.SCALES[position]));
         scalesRecycler.setAdapter(mScalesAdapter);
         scalesRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
 

@@ -51,6 +51,9 @@ public class DefaultFragment extends Fragment {
             public void onIsSharpChange(boolean isSharp) {
 
             }
+
+            @Override
+            public void onHighlightChange() {}
         });
 
 

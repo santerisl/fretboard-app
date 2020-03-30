@@ -21,6 +21,14 @@ public class NoteGroup {
         return result;
     }
 
+    public int getIntervalCount() {
+        return intervals.length;
+    }
+
+    public int get(int interval) {
+        return intervals[interval];
+    }
+
     @Override
     public String toString() {
         return this.getName();

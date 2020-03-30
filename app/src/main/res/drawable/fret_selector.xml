@@ -16,7 +16,7 @@
         app:state_fret_faded="true"/>
 
     <item
-        android:color="@color/colorSecondaryVariant"
+        android:color="@color/colorOnPrimary"
         android:drawable="@android:color/transparent"
         app:state_fret_selected="false"
         app:state_fret_faded="true" />

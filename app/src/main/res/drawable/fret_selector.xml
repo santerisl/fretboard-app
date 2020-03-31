@@ -2,27 +2,26 @@
 <selector
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <item
         android:color="@color/colorOnPrimary"
-        android:drawable="@color/colorPrimary"
+        android:drawable="@drawable/fret_highlight"
         app:state_fret_selected="true"
-        app:state_fret_faded="false"/>
+        app:state_fret_faded="false" />
 
     <item
         android:color="@color/colorOnError"
-        android:drawable="@color/colorError"
+        android:drawable="@drawable/fret_incorrect"
         app:state_fret_selected="true"
         app:state_fret_faded="true"/>
 
     <item
-        android:color="@color/colorOnPrimary"
-        android:drawable="@android:color/transparent"
+        android:color="@color/colorSecondaryVariant"
+        android:drawable="@drawable/fret_default"
         app:state_fret_selected="false"
         app:state_fret_faded="true" />
 
     <item
         android:color="@android:color/black"
-        android:drawable="@android:color/transparent" />
+        android:drawable="@drawable/fret_default" />
 
 </selector>

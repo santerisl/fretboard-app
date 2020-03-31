@@ -2,8 +2,8 @@
 <fi.sntr.fretboard.FretButton
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fret_button"
-    android:layout_width="50dp"
-    android:layout_height="40dp"
+    android:layout_width="60sp"
+    android:layout_height="40sp"
     android:background="@drawable/fret_selector"
     android:textColor="@drawable/fret_selector"
     android:textAllCaps="false">

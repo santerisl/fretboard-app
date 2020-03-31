@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,6 @@ import fi.sntr.fretboard.music.Instrument;
 public class FretboardFragment extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView mRecyclerView;
-    private RecyclerView.LayoutManager layoutManager;
 
     public FretboardFragment() {}
 
@@ -36,10 +36,7 @@ public class FretboardFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_fretboard, container, false);
-
         mRecyclerView = view.findViewById(R.id.recycler_view);
-        mRecyclerView.setHasFixedSize(true);
-
         return view;
     }
 
@@ -52,13 +49,24 @@ public class FretboardFragment extends Fragment {
         if(mAdapter == null) {
             mAdapter = new FretboardAdapter(instrument);
             mRecyclerView.setAdapter(mAdapter);
-            layoutManager = new GridLayoutManager(getContext(), instrument.getFretCount());
+            GridLayoutManager layoutManager = new GridLayoutManager(
+                    getContext(),
+                    instrument.getStringCount() * 2 + 1,
+                    GridLayoutManager.HORIZONTAL,
+                    false);
+
+            layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    if(mAdapter.getItemViewType(position) == FretboardAdapter.TYPE_NUMBER) {
+                        return 1;
+                    } else {
+                        return 2;
+                    }
+                }
+            });
             mRecyclerView.setLayoutManager(layoutManager);
         }
-    }
-
-    GridLayoutManager getLayoutManager() {
-        return (GridLayoutManager) layoutManager;
     }
 
     @Override

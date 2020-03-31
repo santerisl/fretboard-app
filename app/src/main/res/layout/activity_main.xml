@@ -6,33 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <HorizontalScrollView
-        android:id="@+id/fretboard_scroll_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <fragment
         android:minHeight="50dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <fragment
-            android:id="@+id/fretboard_view"
-            android:name="fi.sntr.fretboard.FretboardFragment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </HorizontalScrollView>
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/fretboard_view"
+        android:name="fi.sntr.fretboard.FretboardFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/fretboard_scroll_view"
+        app:layout_constraintTop_toBottomOf="@+id/fretboard_view"
         app:layout_constraintBottom_toTopOf="@+id/tab_layout" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent">
-    </com.google.android.material.tabs.TabLayout>
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

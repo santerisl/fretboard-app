@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        instrument.setFretCount(12);
+        instrument.setFretCount(13);
         instrument.setRootNotes(4, 9, 2, 7);
 
         final FretboardFragment fretboard = (FretboardFragment) getSupportFragmentManager().findFragmentById(R.id.fretboard_view);
@@ -45,24 +45,6 @@ public class MainActivity extends AppCompatActivity {
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             tab.setText(TAB_NAMES[position]);
         }).attach();
-
-        instrument.setChangeListener(new InstrumentChangeListener() {
-            @Override
-            public void onSelectedChange(int string, int oldFret, int newFret) {}
-
-            @Override
-            public void onFretCountChange(int oldFretCount, int newFretCount) {
-                if (fretboard != null) {
-                    fretboard.getLayoutManager().setSpanCount(newFretCount);
-                }
-            }
-
-            @Override
-            public void onIsSharpChange(boolean isSharp) {}
-
-            @Override
-            public void onHighlightChange() {}
-        });
     }
 
     class TabAdapter extends FragmentStateAdapter {

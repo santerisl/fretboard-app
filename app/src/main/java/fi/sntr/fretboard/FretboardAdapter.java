@@ -5,10 +5,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import fi.sntr.fretboard.music.Instrument;
@@ -17,8 +17,8 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> implement
 
     private final Instrument mInstrument;
 
-    private static int TYPE_NUMBER = 1;
-    private static int TYPE_FRET = 2;
+    public static int TYPE_NUMBER = 1;
+    public static int TYPE_FRET = 2;
 
     private final int[] accidentalPositions = {1, 3, 6, 8, 10};
 
@@ -46,7 +46,7 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> implement
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         if (getItemViewType(position) == TYPE_NUMBER) {
-            ((NumberViewHolder) holder).setNumber(position);
+            ((NumberViewHolder) holder).setNumber(getFret(position));
         } else {
             final FretViewHolder fH = (FretViewHolder) holder;
             fH.setNoteName(position);
@@ -59,7 +59,7 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> implement
 
     @Override
     public int getItemViewType(int position) {
-        if (position < mInstrument.getFretCount()) {
+        if (position % (mInstrument.getStringCount() + 1) == 0) {
             return TYPE_NUMBER;
         } else {
             return TYPE_FRET;
@@ -68,38 +68,28 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> implement
 
     @Override
     public int getItemCount() {
-        return mInstrument.getNoteCount() + mInstrument.getFretCount();
-    }
-
-    private int getFretPosition(int string, int fret) {
-        int frets = mInstrument.getFretCount();
-        return frets * (string + 1) + fret;
+        return (mInstrument.getStringCount() + 1) * mInstrument.getFretCount();
     }
 
     @Override
     public void onSelectedChange(int string, int oldFret, int newFret) {
-        int frets = mInstrument.getFretCount();
-        int stringPosition = frets + frets * string;
-
         if(oldFret >= 0) {
-            notifyItemChanged(stringPosition + oldFret);
+            notifyItemChanged(getPosition(string, oldFret));
         }
         if(newFret >= 0) {
-            notifyItemChanged(stringPosition + newFret);
+            notifyItemChanged(getPosition(string, newFret));
         }
     }
 
     @Override
     public void onFretCountChange(int oldFretCount, int newFretCount) {
-        for(int i = 0; i < mInstrument.getStringCount() + 1; i++) {
-            int change = newFretCount - oldFretCount;
-            int start = i * oldFretCount + oldFretCount + change * i;
-            if(change > 0) {
-                notifyItemRangeInserted(start, change);
-            }else if(change < 0) {
-                change = Math.abs(change);
-                notifyItemRangeRemoved(start - change, change);
-            }
+        int change = (newFretCount - oldFretCount) * (mInstrument.getStringCount() + 1);
+        int start = getPosition(mInstrument.getStringCount(), mInstrument.getFretCount());
+        if(change > 0) {
+            notifyItemRangeInserted(start, change);
+        }else if(change < 0) {
+            change = Math.abs(change);
+            notifyItemRangeRemoved(start - change, change);
         }
     }
 
@@ -110,7 +100,7 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> implement
                 int note = mInstrument.getNoteNumber(s, f);
                 for (int accidentalPosition : accidentalPositions) {
                     if (accidentalPosition == note) {
-                        notifyItemChanged(getFretPosition(s, f));
+                        notifyItemChanged(getPosition(s, f));
                     }
                 }
             }
@@ -120,6 +110,18 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> implement
     @Override
     public void onHighlightChange() {
         notifyDataSetChanged();
+    }
+
+    private int getString(int position) {
+        return position % (mInstrument.getStringCount() + 1) - 1;
+    }
+
+    private int getFret(int position) {
+        return position / (mInstrument.getStringCount() + 1);
+    }
+
+    private int getPosition(int string, int fret) {
+        return (string + 1) + (mInstrument.getStringCount() + 1) * fret;
     }
 
     class FretViewHolder extends ViewHolder {
@@ -133,8 +135,8 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> implement
         }
 
         void setNoteName(int position) {
-            string = (position - mInstrument.getFretCount()) / mInstrument.getFretCount();
-            fret = (position - mInstrument.getFretCount()) % mInstrument.getFretCount();
+            string = getString(position);
+            fret = getFret(position);
             String text = mInstrument.getNote(string, fret);
 
             mFretButton.setFretSelected(mInstrument.isSelected(string, fret));
@@ -145,14 +147,13 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> implement
 
     static class NumberViewHolder extends ViewHolder {
         private final TextView mFretNumber;
-
         NumberViewHolder(View view) {
             super(view);
             mFretNumber = view.findViewById(R.id.fret_number);
         }
 
-        void setNumber(int position) {
-            mFretNumber.setText(Integer.toString(position));
+        void setNumber(int fretNumber) {
+            mFretNumber.setText(Integer.toString(fretNumber));
         }
     }
 }

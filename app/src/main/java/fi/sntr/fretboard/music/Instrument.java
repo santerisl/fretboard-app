@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Instrument {
+    public static final int MIN_FRETS = 6;
+    public static final int MAX_FRETS = 19;
+
     private List<InstrumentChangeListener> listeners = new ArrayList<>();
 
     private boolean isSharp = true;
@@ -94,26 +97,47 @@ public class Instrument {
         listeners.add(listener);
     }
 
-    public void toggleSharp() {
+    public void setFretCount(int fretCount) {
+        if(fretCount > MAX_FRETS) {
+            fretCount = MAX_FRETS;
+        }
+        if(fretCount < MIN_FRETS) {
+            fretCount = MIN_FRETS;
+        }
+
+        if(this.fretCount != fretCount) {
+            int oldFretCount = this.fretCount;
+            this.fretCount = fretCount;
+
+            for(int i = 0; i < selectedFrets.length; i++) {
+                if(selectedFrets[i] >= fretCount) {
+                    setSelected(i, -1);
+                }
+            }
+
+            for(InstrumentChangeListener listener: listeners) {
+                listener.onFretCountChange(oldFretCount, this.fretCount);
+            }
+        }
+    }
+
+    public void setNoteNamesSharp() {
+        if(!isSharp) {
+            toggleSharp();
+        }
+    }
+
+    public void setNoteNamesFlat() {
+        if(isSharp) {
+            toggleSharp();
+        }
+    }
+
+    private void toggleSharp() {
         isSharp = !isSharp;
 
         for(InstrumentChangeListener listener: listeners) {
             listener.onIsSharpChange(this.isSharp);
-        }
-    }
-
-    public void setFretCount(int fretCount) {
-        int oldFretCount = this.fretCount;
-        this.fretCount = fretCount;
-
-        for(int i = 0; i < selectedFrets.length; i++) {
-            if(selectedFrets[i] >= fretCount) {
-                setSelected(i, -1);
-            }
-        }
-
-        for(InstrumentChangeListener listener: listeners) {
-            listener.onFretCountChange(oldFretCount, this.fretCount);
         }
     }
 

@@ -12,16 +12,15 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import fi.sntr.fretboard.music.Instrument;
-import fi.sntr.fretboard.music.Instrument.InstrumentChangeListener;
 import fi.sntr.fretboard.tabs.DefaultFragment;
 import fi.sntr.fretboard.tabs.HighlightFragment;
-import fi.sntr.fretboard.tabs.SettingsFragment;
+import fi.sntr.fretboard.tabs.InstrumentFragment;
 
 public class MainActivity extends AppCompatActivity {
 
     public final Instrument instrument = new Instrument();
 
-    private final String[] TAB_NAMES = {"Default", "Highlight", "Settings"};
+    private final String[] TAB_NAMES = {"Default", "Highlight", "Instrument"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         public Fragment createFragment(int position) {
             switch (position) {
                 case 2:
-                    return new SettingsFragment();
+                    return new InstrumentFragment();
                 case 1:
                     return new HighlightFragment();
                 case 0:

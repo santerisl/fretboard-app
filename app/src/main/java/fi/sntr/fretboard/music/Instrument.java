@@ -77,7 +77,7 @@ public class Instrument {
     public boolean isHighlighted(int string, int fret) {
         boolean isHighlighted = highlightRoot < 0 || highlight == null;
         for(int i = 0; !isHighlighted && i < highlight.getIntervalCount(); i++) {
-            int note = highlight.get(i) + highlightRoot;
+            int note = (highlight.get(i) + highlightRoot) % Music.NOTE_COUNT;
             if(note == getNoteNumber(string, fret)) {
                 isHighlighted = true;
             }

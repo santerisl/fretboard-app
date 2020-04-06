@@ -2,7 +2,7 @@ package fi.sntr.fretboard.music;
 
 public class NoteGroup {
     private final String name;
-    private final int[] intervals;
+    public final int[] intervals;
 
     public NoteGroup(String name, int ...intervals) {
         this.name = name;

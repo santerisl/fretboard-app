@@ -145,6 +145,14 @@ public class Instrument {
         }
     }
 
+    public int getHighlightRoot() {
+        return highlightRoot;
+    }
+
+    public NoteGroup getHighlight() {
+        return highlight;
+    }
+
     public interface InstrumentChangeListener {
         void onInstrumentChange();
         void onSelectedChange(int string, int oldFret, int newFret);

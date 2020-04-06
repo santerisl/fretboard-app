@@ -71,6 +71,11 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> implement
     }
 
     @Override
+    public void onInstrumentChange() {
+        notifyDataSetChanged();
+    }
+
+    @Override
     public void onSelectedChange(int string, int oldFret, int newFret) {
         if(oldFret >= 0) {
             notifyItemChanged(getPosition(string, oldFret));

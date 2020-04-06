@@ -22,6 +22,10 @@ public class Instrument {
     public void setRootNotes(int ...rootNotes) {
         this.rootNotes = rootNotes;
         this.selectedFrets = new int[rootNotes.length];
+
+        for(InstrumentChangeListener listener: listeners) {
+            listener.onInstrumentChange();
+        }
     }
 
     public int getNoteCount() {
@@ -142,6 +146,7 @@ public class Instrument {
     }
 
     public interface InstrumentChangeListener {
+        void onInstrumentChange();
         void onSelectedChange(int string, int oldFret, int newFret);
         void onFretCountChange(int oldFretCount, int newFretCount);
         void onIsSharpChange(boolean isSharp);

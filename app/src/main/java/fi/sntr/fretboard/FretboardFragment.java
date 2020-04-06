@@ -19,7 +19,8 @@ import fi.sntr.fretboard.music.Instrument;
 public class FretboardFragment extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView mRecyclerView;
-
+    private GridLayoutManager mGridLayoutManager;
+    private Instrument mInstrument;
     public FretboardFragment() {}
 
     @SuppressWarnings("unused")
@@ -46,16 +47,17 @@ public class FretboardFragment extends Fragment {
     }
 
     void setInstrument(Instrument instrument) {
+        mInstrument = instrument;
         if(mAdapter == null) {
             mAdapter = new FretboardAdapter(instrument);
             mRecyclerView.setAdapter(mAdapter);
-            GridLayoutManager layoutManager = new GridLayoutManager(
+            mGridLayoutManager = new GridLayoutManager(
                     getContext(),
                     instrument.getStringCount() * 2 + 1,
                     GridLayoutManager.HORIZONTAL,
                     false);
 
-            layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            mGridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                 @Override
                 public int getSpanSize(int position) {
                     if(mAdapter.getItemViewType(position) == FretboardAdapter.TYPE_NUMBER) {
@@ -65,8 +67,12 @@ public class FretboardFragment extends Fragment {
                     }
                 }
             });
-            mRecyclerView.setLayoutManager(layoutManager);
+            mRecyclerView.setLayoutManager(mGridLayoutManager);
         }
+    }
+
+    public void updateSpanCount() {
+        mGridLayoutManager.setSpanCount(mInstrument.getStringCount() * 2 + 1);
     }
 
     @Override

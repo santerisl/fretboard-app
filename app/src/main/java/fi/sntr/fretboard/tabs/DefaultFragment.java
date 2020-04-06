@@ -30,6 +30,9 @@ public class DefaultFragment extends Fragment {
 
         mInstrument.setChangeListener(new Instrument.InstrumentChangeListener() {
             @Override
+            public void onInstrumentChange() { }
+
+            @Override
             public void onSelectedChange(int string, int oldFret, int newFret) {
                 String text = "";
                 for(int i = 0; i < mInstrument.getStringCount(); i++) {

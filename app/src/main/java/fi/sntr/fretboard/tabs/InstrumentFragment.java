@@ -56,6 +56,20 @@ public class InstrumentFragment extends Fragment {
             }
         });
 
+        MaterialButtonToggleGroup instrumentGroup = view.findViewById(R.id.group_instrument);
+        instrumentGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+            if(isChecked) {
+                switch (checkedId) {
+                    case R.id.instrument_mandolin:
+                        mInstrument.setRootNotes(4, 9, 2, 7);
+                        break;
+                    case R.id.instrument_guitar:
+                        mInstrument.setRootNotes(4, 11, 7, 2, 9, 4);
+                        break;
+                }
+            }
+        });
+
         return view;
     }
 

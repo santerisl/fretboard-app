@@ -44,6 +44,25 @@ public class MainActivity extends AppCompatActivity {
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             tab.setText(TAB_NAMES[position]);
         }).attach();
+
+        instrument.setChangeListener(new Instrument.InstrumentChangeListener() {
+            @Override
+            public void onInstrumentChange() {
+                fretboard.updateSpanCount();
+            }
+
+            @Override
+            public void onSelectedChange(int string, int oldFret, int newFret) {}
+
+            @Override
+            public void onFretCountChange(int oldFretCount, int newFretCount) {}
+
+            @Override
+            public void onIsSharpChange(boolean isSharp) {}
+
+            @Override
+            public void onHighlightChange() {}
+        });
     }
 
     class TabAdapter extends FragmentStateAdapter {

@@ -2,6 +2,7 @@
 <resources>
     <declare-styleable name="FretButton">
         <attr name="state_fret_selected" format="boolean" />
-        <attr name="state_fret_faded" format="boolean" />
+        <attr name="state_fret_highlighted_chord" format="boolean" />
+        <attr name="state_fret_highlighted_scale" format="boolean" />
     </declare-styleable>
 </resources>

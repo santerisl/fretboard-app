@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/fret_default" />
     <item
         android:left="15sp"
         android:right="15sp"
@@ -15,5 +14,4 @@
                 android:width="30sp" />
         </shape>
     </item>
-
 </layer-list>

@@ -5,7 +5,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -140,7 +139,7 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> implement
             String text = mInstrument.getNote(string, fret);
 
             mFretButton.setFretSelected(mInstrument.isSelected(string, fret));
-            mFretButton.setFretFaded(!mInstrument.isHighlighted(string, fret));
+            mFretButton.setFretHighlightedChord(mInstrument.isHighlighted(string, fret));
             mFretButton.setText(text);
         }
     }

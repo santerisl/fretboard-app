@@ -83,14 +83,18 @@ public class ChordsFragment extends Fragment {
 
             @Override
             public void onHighlightChange() {
-                String root = (Music.NAMES_SHARP[mInstrument.getHighlightRoot()]);
-                String name = (mInstrument.getHighlight().getName());
-                String intervals = (mInstrument.getHighlight().getIntervalString());
+                if(mInstrument.getHighlightChord() != null && mInstrument.getHighlightRoot() >= 0) {
+                    String root = (Music.NAMES_SHARP[mInstrument.getHighlightRoot()]);
+                    String name = (mInstrument.getHighlightChord().getName());
+                    String intervals = (mInstrument.getHighlightChord().getIntervalString());
 
-                highlightText.setText(root + name + intervals);
+                    highlightText.setText(root + name + intervals);
+
+                } else {
+                    highlightText.setText("");
+                }
             }
         });
-
 
         return view;
     }

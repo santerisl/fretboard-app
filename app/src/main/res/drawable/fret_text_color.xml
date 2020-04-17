@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:color="@color/colorOnPrimary"
+        app:state_fret_selected="true"
+        app:state_fret_highlighted_chord="true"/>
+
+    <item
+        android:color="@color/colorOnError"
+        app:state_fret_selected="true"
+        app:state_fret_highlighted_chord="false"/>
+
+    <item
+        android:color="@color/colorOnSurface"
+        app:state_fret_highlighted_chord="true"
+        app:state_fret_highlighted_scale="true"/>
+
+    <item
+        android:color="@color/colorFretFaded"
+        app:state_fret_highlighted_chord="false"
+        app:state_fret_highlighted_scale="true"/>
+
+    <item
+        android:color="@color/colorOnSecondary"/>
+
+</selector>

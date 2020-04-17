@@ -4,7 +4,7 @@
     android:id="@+id/fret_button"
     android:layout_width="60sp"
     android:layout_height="40sp"
-    android:background="@drawable/fret_selector"
-    android:textColor="@drawable/fret_selector"
+    android:background="@drawable/fret"
+    android:textColor="@drawable/fret_text_color"
     android:textAllCaps="false">
 </fi.sntr.fretboard.FretButton>

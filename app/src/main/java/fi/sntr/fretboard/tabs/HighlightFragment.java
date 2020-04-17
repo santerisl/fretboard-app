@@ -6,24 +6,25 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.button.MaterialButtonToggleGroup;
 
 import fi.sntr.fretboard.MainActivity;
 import fi.sntr.fretboard.R;
+import fi.sntr.fretboard.adapters.ButtonToggleListAdapter;
+import fi.sntr.fretboard.adapters.ButtonToggleListAdapter.OnItemClickListener;
 import fi.sntr.fretboard.music.Instrument;
 import fi.sntr.fretboard.music.Music;
 
 public class HighlightFragment extends Fragment {
 
     private Instrument mInstrument;
-    private MaterialButtonToggleGroup scaleGroup;
-    private MaterialButtonToggleGroup chordGroup;
 
     @Nullable
     @Override
@@ -31,81 +32,45 @@ public class HighlightFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.tab_highlight, container, false);
 
-        MaterialButtonToggleGroup noteGroup = view.findViewById(R.id.notes_group);
-        for(int i = 0; i < Music.NAMES_SHARP.length; i++) {
-            MaterialButton button = (MaterialButton) inflater.inflate(R.layout.highlight_group_button,
-                    noteGroup, false);
-            button.setText(Music.NAMES_SHARP[i]);
-            button.setTag(i);
-            noteGroup.addView(button);
-        }
+        createAdapter(view.findViewById(R.id.notes_view),
+                Music.NAMES_SHARP,
+                this::highlightRootChange);
 
-        chordGroup = view.findViewById(R.id.chords_group);
-        for(int i = 0; i < Music.CHORDS.length; i++) {
-            MaterialButton button = (MaterialButton) inflater.inflate(R.layout.highlight_group_button,
-                    chordGroup, false);
-            button.setText(Music.CHORDS[i].getName());
-            button.setTag(i);
-            button.setOnClickListener(this::setHighlightChord);
-            chordGroup.addView(button);
-        }
+        createAdapter(view.findViewById(R.id.chords_view),
+                Music.CHORDS,
+                this::highlightChordChange);
 
-        scaleGroup = view.findViewById(R.id.scales_group);
-        for(int i = 0; i < Music.SCALES.length; i++) {
-            MaterialButton button = (MaterialButton) inflater.inflate(R.layout.highlight_group_button,
-                    scaleGroup, false);
-            button.setText(Music.SCALES[i].getName());
-            button.setTag(i);
-            button.setOnClickListener(this::setHighlightScale);
-            scaleGroup.addView(button);
-        }
-
-        noteGroup.addOnButtonCheckedListener(this::setInstrumentHighlightRoot);
+        createAdapter(view.findViewById(R.id.scales_view),
+                Music.SCALES,
+                this::highlightScaleChange);
 
         return view;
     }
 
-    private void setInstrumentHighlightRoot(MaterialButtonToggleGroup group, int checkedId,  boolean isChecked) {
-        MaterialButton button;
-        if(group.getId() == R.id.notes_group) {
-            if (group.getCheckedButtonId() == View.NO_ID) {
-                mInstrument.setHighlightRoot(-1);
-            }
-            button = group.findViewById(group.getCheckedButtonId());
+    public void highlightRootChange(int position) {
+        mInstrument.setHighlightRoot(position);
+    }
 
-            if (button != null && button.getTag() != null) {
-                int position = (int) button.getTag();
-                mInstrument.setHighlightRoot(position);
-            }
+    public void highlightChordChange(int position) {
+        if(position >= 0) {
+            mInstrument.setHighlightChord(Music.CHORDS[position]);
+        } else {
+            mInstrument.setHighlightChord(null);
         }
     }
 
-    private void setHighlightChord(View v) {
-        int chordId = chordGroup.getCheckedButtonId();
-        if (chordId != View.NO_ID) {
-            MaterialButton button = chordGroup.findViewById(chordId);
-            if (button != null && button.getTag() != null) {
-                int position = (int) button.getTag();
-                mInstrument.setHighlight(Music.CHORDS[position]);
-                scaleGroup.clearChecked();
-            }
+    public void highlightScaleChange(int position) {
+        if(position >= 0) {
+            mInstrument.setHighlightScale(Music.SCALES[position]);
         } else {
-            mInstrument.setHighlight(null);
+            mInstrument.setHighlightScale(null);
         }
     }
 
-    private void setHighlightScale(View v) {
-        int scaleId = scaleGroup.getCheckedButtonId();
-        if (scaleId != View.NO_ID) {
-            MaterialButton button = scaleGroup.findViewById(scaleId);
-            if (button != null && button.getTag() != null) {
-                int position = (int) button.getTag();
-                mInstrument.setHighlight(Music.SCALES[position]);
-                chordGroup.clearChecked();
-            }
-        } else {
-            mInstrument.setHighlight(null);
-        }
+    private <T> void createAdapter(RecyclerView recycler, T[] items, OnItemClickListener listener) {
+        recycler.setAdapter(new ButtonToggleListAdapter<>(items, listener));
+        recycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        recycler.setHasFixedSize(true);
     }
 
     @Override

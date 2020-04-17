@@ -15,7 +15,8 @@ public class Instrument {
     private int[] selectedFrets = new int[0];
 
     private int highlightRoot = -1;
-    private NoteGroup highlight;
+    private NoteGroup highlightChord;
+    private NoteGroup highlightScale;
 
     public Instrument() {}
 
@@ -50,11 +51,15 @@ public class Instrument {
         }
     }
 
-    public void setHighlight(NoteGroup noteGroup) {
-        this.highlight = noteGroup;
-        if(this.highlightRoot < 0) {
-            this.highlightRoot = 0;
+    public void setHighlightChord(NoteGroup noteGroup) {
+        this.highlightChord = noteGroup;
+        for(InstrumentChangeListener listener: listeners) {
+            listener.onHighlightChange();
         }
+    }
+
+    public void setHighlightScale(NoteGroup noteGroup) {
+        this.highlightScale = noteGroup;
 
         for(InstrumentChangeListener listener: listeners) {
             listener.onHighlightChange();
@@ -78,10 +83,18 @@ public class Instrument {
         return selectedFrets[string] == fret;
     }
 
-    public boolean isHighlighted(int string, int fret) {
-        boolean isHighlighted = highlightRoot < 0 || highlight == null;
-        for(int i = 0; !isHighlighted && i < highlight.getIntervalCount(); i++) {
-            int note = (highlight.get(i) + highlightRoot) % Music.NOTE_COUNT;
+    public boolean isHighlightedChord(int string, int fret) {
+        return isHighlighted(highlightChord, string, fret);
+    }
+
+    public boolean isHighlightedScale(int string, int fret) {
+        return isHighlighted(highlightScale, string, fret);
+    }
+
+    private boolean isHighlighted(NoteGroup group, int string, int fret) {
+        boolean isHighlighted = highlightRoot < 0 || group == null;
+        for(int i = 0; !isHighlighted && i < group.getIntervalCount(); i++) {
+            int note = (group.get(i) + highlightRoot) % Music.NOTE_COUNT;
             if(note == getNoteNumber(string, fret)) {
                 isHighlighted = true;
             }
@@ -149,8 +162,12 @@ public class Instrument {
         return highlightRoot;
     }
 
-    public NoteGroup getHighlight() {
-        return highlight;
+    public NoteGroup getHighlightChord() {
+        return highlightChord;
+    }
+
+    public NoteGroup getHighlightScale() {
+        return highlightScale;
     }
 
     public interface InstrumentChangeListener {

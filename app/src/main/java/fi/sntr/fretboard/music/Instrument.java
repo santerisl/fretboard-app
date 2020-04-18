@@ -35,11 +35,15 @@ public class Instrument {
     }
 
     public int getNoteNumber(int string, int fret) {
-        return (rootNotes[string] + fret) % Music.NOTE_COUNT;
+        return Music.getNoteNumber(rootNotes[string] + fret);
     }
 
     public int getSelectedNoteNumber(int string) {
-        return (rootNotes[string] + selectedFrets[string]) % Music.NOTE_COUNT;
+        if(selectedFrets[string] >= 0) {
+            return Music.getNoteNumber(rootNotes[string] + selectedFrets[string]);
+        } else {
+            return -1;
+        }
     }
 
     public String getNote(int string, int fret) {

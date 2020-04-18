@@ -117,7 +117,7 @@ public class ChordsFragment extends Fragment {
         }
 
         compareResults.clear();
-        compareResults.addAll(ChordFinder.findChords(selectedNotes));
+        compareResults.addAll(ChordFinder.findChords(mInstrument));
     }
 
     class ChordsAdapter extends RecyclerView.Adapter<CompareViewHolder> {
@@ -142,9 +142,9 @@ public class ChordsFragment extends Fragment {
             CompareResult r = items.get(position);
             String name = Music.NAMES_SHARP[r.root] + Music.CHORDS[r.chordId].getName();
             String missing = "";
-            if(r.missing.size() > 0) {
-                missing = "(Missing " + r.missing.size() + " notes)";
-            }
+            //if(r.missing.size() > 0) {
+            //    missing = "(Missing " + r.missing.size() + " notes)";
+            //}
             holder.textView.setText(name + ", " + missing + r.toString());
         }
 

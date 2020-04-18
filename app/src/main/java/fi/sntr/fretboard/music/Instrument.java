@@ -12,6 +12,7 @@ public class Instrument {
     private boolean isSharp = true;
     private int fretCount = 1;
     private int[] rootNotes = new int[0];
+
     private int[] selectedFrets = new int[0];
 
     private int highlightRoot = -1;
@@ -35,6 +36,10 @@ public class Instrument {
 
     public int getNoteNumber(int string, int fret) {
         return (rootNotes[string] + fret) % Music.NOTE_COUNT;
+    }
+
+    public int getSelectedNoteNumber(int string) {
+        return (rootNotes[string] + selectedFrets[string]) % Music.NOTE_COUNT;
     }
 
     public String getNote(int string, int fret) {

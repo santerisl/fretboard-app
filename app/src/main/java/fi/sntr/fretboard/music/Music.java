@@ -1,8 +1,5 @@
 package fi.sntr.fretboard.music;
 
-import java.util.Map;
-import java.util.LinkedHashMap;
-
 public class Music {
 
     static final int NOTE_COUNT = 12;
@@ -72,4 +69,11 @@ public class Music {
             new NoteGroup("Pentatonic", 0, 2, 4, 7, 9),
             new NoteGroup("Minor pentatonic", 0, 3, 5, 7, 10)
     };
+
+    public static int getNoteNumber(int n) {
+        while(n < 0){
+            n += NOTE_COUNT;
+        }
+        return n % NOTE_COUNT;
+    }
 }

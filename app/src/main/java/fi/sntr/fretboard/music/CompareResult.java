@@ -1,21 +1,36 @@
 package fi.sntr.fretboard.music;
 
-import java.util.List;
-
 public class CompareResult implements Comparable<CompareResult> {
     public int root;
     public int chordId;
-    public List<Integer> found;
-    public List<Integer> missing;
-    public List<Integer> extra;
+    private int found;
+    private int missing;
+    private int extra;
+    public int missingCount;
 
-    @Override
-    public String toString() {
-        return root + ": (" + found.toString() + ", " + missing.toString() + ", " + extra.toString() + ")";
+    public CompareResult(int root, int chordId, int found, int missing, int extra) {
+        this.root = root;
+        this.chordId = chordId;
+        this.found = found;
+        this.missing = missing;
+        this.extra = extra;
+
+        while (missing > 0) {
+            missingCount += missing & 1;
+            missing = missing >> 1;
+        }
     }
 
     @Override
-    public int compareTo(CompareResult other) {
-        return missing.size() - other.missing.size();
+    public String toString() {
+        return "(" + root + ": "
+                + Integer.toBinaryString(found) + ", "
+                + Integer.toBinaryString(missing) + ", "
+                + Integer.toBinaryString(extra) + ")";
+    }
+
+    @Override
+    public int compareTo(CompareResult c) {
+        return this.missingCount - c.missingCount;
     }
 }

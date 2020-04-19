@@ -11,15 +11,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import fi.sntr.fretboard.music.Instrument;
-import fi.sntr.fretboard.music.NoteGroup;
 
 public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> implements Instrument.InstrumentChangeListener {
 
     private final Instrument mInstrument;
-
-    private int highlightRoot = -1;
-    private NoteGroup chordHighlight;
-    private NoteGroup scaleHighlight;
 
     public static int TYPE_NUMBER = 1;
     public static int TYPE_FRET = 2;
@@ -54,7 +49,6 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> implement
         } else {
             final FretViewHolder fH = (FretViewHolder) holder;
             fH.setNoteName(position);
-
             fH.mFretButton.setOnClickListener(v -> {
                 mInstrument.setSelected(fH.string, fH.fret);
             });
@@ -150,11 +144,7 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> implement
 
             mFretButton.setFretSelected(mInstrument.isSelected(string, fret));
             mFretButton.setFretHighlightedChord(mInstrument.isHighlightedChord(string, fret));
-            if(mInstrument.getHighlightScale() == null) {
-                mFretButton.setFretHighlightedScale(true);
-            } else {
-                mFretButton.setFretHighlightedScale(mInstrument.isHighlightedScale(string, fret));
-            }
+            mFretButton.setFretHighlightedScale(mInstrument.isHighlightedScale(string, fret));
             mFretButton.setText(text);
         }
     }

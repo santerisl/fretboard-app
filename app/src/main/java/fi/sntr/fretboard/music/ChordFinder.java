@@ -17,11 +17,21 @@ public class ChordFinder {
                 int bits = getBits(instrument, baseNote);
                 for(int j = 0; j < Music.CHORDS.length; j++){
                     CompareResult cR = compareChord(bits, j, baseNote);
-                    if(cR.missingCount <= 12 && !cR.hasExtraNotes()) {
+                    cR.setHighlighted(cR.chordId == instrument.getHighlightChord() && instrument.getHighlightRoot() == baseNote);
+                    if(cR.missingCount <= 12 && !cR.hasExtraNotes() || cR.isHighlighted()) {
                         returnChords.add(cR);
                     }
                 }
             }
+        }
+
+        if(instrument.getHighlightRoot() >= 0
+                && instrument.getHighlightChord() >= 0
+                &&!baseNotes.contains(instrument.getHighlightRoot())) {
+            int baseNote = instrument.getHighlightRoot();
+            CompareResult cR = compareChord(getBits(instrument, baseNote), instrument.getHighlightChord(), baseNote);
+            cR.setHighlighted(true);
+            returnChords.add(cR);
         }
 
         Collections.sort(returnChords);

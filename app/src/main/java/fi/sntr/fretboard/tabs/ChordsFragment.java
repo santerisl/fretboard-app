@@ -12,12 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import fi.sntr.fretboard.MainActivity;
 import fi.sntr.fretboard.R;
@@ -25,15 +22,11 @@ import fi.sntr.fretboard.adapters.ChordResultAdapter;
 import fi.sntr.fretboard.music.ChordFinder;
 import fi.sntr.fretboard.music.CompareResult;
 import fi.sntr.fretboard.music.Instrument;
-import fi.sntr.fretboard.music.Music;
 
 public class ChordsFragment extends Fragment {
 
     private Instrument mInstrument;
-    private Set<Integer> selected = new HashSet<>();
-
     private List<CompareResult> compareResults = new ArrayList<>();
-    private List<Integer> selectedNotes = new ArrayList<>();
 
     @Nullable
     @Override
@@ -43,7 +36,7 @@ public class ChordsFragment extends Fragment {
 
         RecyclerView chordsRecycler = view.findViewById(R.id.compare_view);
         chordsRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        ChordResultAdapter chordsAdapter = new ChordResultAdapter(compareResults);
+        ChordResultAdapter chordsAdapter = new ChordResultAdapter(compareResults, mInstrument);
         chordsRecycler.setAdapter(chordsAdapter);
 
         updateChords();
@@ -70,7 +63,8 @@ public class ChordsFragment extends Fragment {
 
             @Override
             public void onHighlightChange() {
-
+                updateChords();
+                chordsAdapter.notifyDataSetChanged();
             }
         });
 

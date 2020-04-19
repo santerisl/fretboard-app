@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,37 +33,17 @@ public class HighlightFragment extends Fragment {
 
         createAdapter(view.findViewById(R.id.notes_view),
                 Music.NAMES_SHARP,
-                this::highlightRootChange);
+                mInstrument::setHighlightRoot);
 
         createAdapter(view.findViewById(R.id.chords_view),
                 Music.CHORDS,
-                this::highlightChordChange);
+                mInstrument::setHighlightChord);
 
         createAdapter(view.findViewById(R.id.scales_view),
                 Music.SCALES,
-                this::highlightScaleChange);
+                mInstrument::setHighlightScale);
 
         return view;
-    }
-
-    public void highlightRootChange(int position) {
-        mInstrument.setHighlightRoot(position);
-    }
-
-    public void highlightChordChange(int position) {
-        if(position >= 0) {
-            mInstrument.setHighlightChord(Music.CHORDS[position]);
-        } else {
-            mInstrument.setHighlightChord(null);
-        }
-    }
-
-    public void highlightScaleChange(int position) {
-        if(position >= 0) {
-            mInstrument.setHighlightScale(Music.SCALES[position]);
-        } else {
-            mInstrument.setHighlightScale(null);
-        }
     }
 
     private <T> void createAdapter(RecyclerView recycler, T[] items, OnItemClickListener listener) {

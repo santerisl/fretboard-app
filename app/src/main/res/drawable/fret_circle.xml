@@ -16,7 +16,7 @@
                 android:bottom="5sp">
                 <shape android:shape="oval">
                     <solid
-                        android:color="@drawable/fret_circle_color" />
+                        android:color="@color/fret_circle_color" />
                     <size
                         android:height="30sp"
                         android:width="30sp" />

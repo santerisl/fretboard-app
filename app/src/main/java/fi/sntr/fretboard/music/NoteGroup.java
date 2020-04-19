@@ -1,7 +1,5 @@
 package fi.sntr.fretboard.music;
 
-import android.util.Log;
-
 public class NoteGroup {
     private final String name;
     public final int[] intervals;
@@ -21,14 +19,6 @@ public class NoteGroup {
 
     public String getFullName() {
         return this.name.equals("") ? "Major" : this.name;
-    }
-
-    public String getIntervalString() {
-        String result = "";
-        for(int i = 0; i < intervals.length; i++) {
-            result += "(" + Music.INTERVALS[intervals[i]] + ")";
-        }
-        return result;
     }
 
     public int getIntervalCount() {

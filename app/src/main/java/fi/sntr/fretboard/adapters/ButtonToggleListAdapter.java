@@ -27,6 +27,11 @@ public class ButtonToggleListAdapter<T> extends RecyclerView.Adapter<ButtonToggl
         mListener = listener;
     }
 
+    public void setSelected(int selected) {
+        this.selectedPosition = selected;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public ButtonViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

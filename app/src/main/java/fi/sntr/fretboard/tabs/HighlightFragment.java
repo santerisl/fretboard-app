@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
 import fi.sntr.fretboard.MainActivity;
 import fi.sntr.fretboard.R;
 import fi.sntr.fretboard.adapters.ButtonToggleListAdapter;
@@ -24,6 +23,8 @@ import fi.sntr.fretboard.music.Music;
 public class HighlightFragment extends Fragment {
 
     private Instrument mInstrument;
+    private ButtonToggleListAdapter noteAdapter;
+    private ButtonToggleListAdapter chordAdapter;
 
     @Nullable
     @Override
@@ -31,25 +32,34 @@ public class HighlightFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.tab_highlight, container, false);
 
-        createAdapter(view.findViewById(R.id.notes_view),
-                Music.NAMES_SHARP,
-                mInstrument::setHighlightRoot);
+        noteAdapter = createAdapter(
+                view.findViewById(R.id.notes_view),
+                Music.NAMES_SHARP, mInstrument::setHighlightRoot);
 
-        createAdapter(view.findViewById(R.id.chords_view),
-                Music.CHORDS,
-                mInstrument::setHighlightChord);
+        chordAdapter = createAdapter(
+                view.findViewById(R.id.chords_view),
+                Music.CHORDS, mInstrument::setHighlightChord);
 
-        createAdapter(view.findViewById(R.id.scales_view),
-                Music.SCALES,
-                mInstrument::setHighlightScale);
+        createAdapter(
+                view.findViewById(R.id.scales_view),
+                Music.SCALES, mInstrument::setHighlightScale);
 
         return view;
     }
 
-    private <T> void createAdapter(RecyclerView recycler, T[] items, OnItemClickListener listener) {
-        recycler.setAdapter(new ButtonToggleListAdapter<>(items, listener));
+    @Override
+    public void onResume() {
+        super.onResume();
+        noteAdapter.setSelected(mInstrument.getHighlightRoot());
+        chordAdapter.setSelected(mInstrument.getHighlightChord());
+    }
+
+    private <T> ButtonToggleListAdapter createAdapter(RecyclerView recycler, T[] items, OnItemClickListener listener) {
+        ButtonToggleListAdapter adapter = new ButtonToggleListAdapter<>(items, listener);
+        recycler.setAdapter(adapter);
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
         recycler.setHasFixedSize(true);
+        return adapter;
     }
 
     @Override

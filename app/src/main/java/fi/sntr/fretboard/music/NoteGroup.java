@@ -16,6 +16,10 @@ public class NoteGroup {
     }
 
     public String getName() {
+        return this.name;
+    }
+
+    public String getFullName() {
         return this.name.equals("") ? "Major" : this.name;
     }
 
@@ -41,6 +45,6 @@ public class NoteGroup {
 
     @Override
     public String toString() {
-        return this.getName();
+        return this.getFullName();
     }
 }

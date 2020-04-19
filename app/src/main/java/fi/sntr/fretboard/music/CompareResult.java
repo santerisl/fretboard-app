@@ -6,6 +6,7 @@ public class CompareResult implements Comparable<CompareResult> {
     private int found;
     private int missing;
     private int extra;
+
     public int missingCount;
 
     public CompareResult(int root, int chordId, int found, int missing, int extra) {
@@ -29,8 +30,20 @@ public class CompareResult implements Comparable<CompareResult> {
                 + Integer.toBinaryString(extra) + ")";
     }
 
+    public String getChordName() {
+        return String.format("%s%s", Music.NAMES_SHARP[root], Music.CHORDS[chordId].getName());
+    }
+
+    public boolean hasNote(int note) {
+        return (found & (1 << Music.getNoteNumber(note))) > 0;
+    }
+
     @Override
     public int compareTo(CompareResult c) {
         return this.missingCount - c.missingCount;
+    }
+
+    public boolean hasExtraNotes() {
+        return extra > 0;
     }
 }

@@ -1,7 +1,5 @@
 package fi.sntr.fretboard.music;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -16,11 +14,10 @@ public class ChordFinder {
         for(int i = 0; i < instrument.getStringCount(); i++){
             int baseNote = instrument.getSelectedNoteNumber(i);
             if(baseNote >= 0 && baseNotes.add(baseNote)) {
-                Log.d("Debug", "BASE: " + baseNote);
                 int bits = getBits(instrument, baseNote);
                 for(int j = 0; j < Music.CHORDS.length; j++){
                     CompareResult cR = compareChord(bits, j, baseNote);
-                    if(cR.missingCount <= 12) {
+                    if(cR.missingCount <= 12 && !cR.hasExtraNotes()) {
                         returnChords.add(cR);
                     }
                 }
@@ -28,7 +25,6 @@ public class ChordFinder {
         }
 
         Collections.sort(returnChords);
-        Log.d("Debug", baseNotes.toString());
         return returnChords;
     }
 

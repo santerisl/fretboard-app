@@ -76,4 +76,8 @@ public class Music {
         }
         return n % NOTE_COUNT;
     }
+
+    public static String getNoteName(int note) {
+        return Music.NAMES_SHARP[getNoteNumber(note)];
+    }
 }

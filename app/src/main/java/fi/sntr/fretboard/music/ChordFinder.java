@@ -2,40 +2,43 @@ package fi.sntr.fretboard.music;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class ChordFinder {
 
-    public static List<CompareResult> findChords(Instrument instrument){
+    public static List<CompareResult> findChords(Set<Integer> notes, int includeRoot, int includeChord){
         List<CompareResult> returnChords = new ArrayList<>();
-        Set<Integer> baseNotes = new HashSet<>();
-        for(int i = 0; i < instrument.getStringCount(); i++){
-            int baseNote = instrument.getSelectedNoteNumber(i);
-            if(baseNote >= 0 && baseNotes.add(baseNote)) {
-                int bits = getBits(instrument, baseNote);
-                for(int j = 0; j < Music.CHORDS.length; j++){
-                    CompareResult cR = compareChord(bits, j, baseNote);
-                    cR.setHighlighted(cR.chordId == instrument.getHighlightChord() && instrument.getHighlightRoot() == baseNote);
-                    if(cR.missingCount <= 12 && !cR.hasExtraNotes() || cR.isHighlighted()) {
-                        returnChords.add(cR);
+        CompareResult highlighted = null;
+        for(Integer baseNote: notes) {
+            int bits = getBits(notes, baseNote);
+            for (int j = 0; j < Music.CHORDS.length; j++) {
+                CompareResult cR = compareChord(bits, j, baseNote);
+                if (cR.missingCount <= 12 && !cR.hasExtraNotes()) {
+                    returnChords.add(cR);
+                    if(cR.equalsChord(includeRoot,includeChord)) {
+                        highlighted = cR;
                     }
                 }
             }
         }
 
-        if(instrument.getHighlightRoot() >= 0
-                && instrument.getHighlightChord() >= 0
-                &&!baseNotes.contains(instrument.getHighlightRoot())) {
-            int baseNote = instrument.getHighlightRoot();
-            CompareResult cR = compareChord(getBits(instrument, baseNote), instrument.getHighlightChord(), baseNote);
-            cR.setHighlighted(true);
-            returnChords.add(cR);
+        if(includeChord >= 0 && includeRoot >= 0) {
+            if(highlighted == null) {
+                highlighted = findChord(includeRoot, includeChord, notes);
+                returnChords.add(highlighted);
+            }
+            highlighted.setHighlighted(true);
         }
 
         Collections.sort(returnChords);
+
         return returnChords;
+    }
+
+    public static CompareResult findChord(int root, int chordId, Set<Integer> selected) {
+        int bits = getBits(selected, root);
+        return compareChord(bits, chordId, root);
     }
 
     private static CompareResult compareChord(int bits, int chordIndex, int baseNote){
@@ -46,10 +49,9 @@ public class ChordFinder {
         return new CompareResult(baseNote, chordIndex, found, missing, extra);
     }
 
-    private static int getBits(Instrument instrument, int baseNote) {
+    private static int getBits(Set<Integer> notes, int baseNote) {
         int bits = 0;
-        for(int i = 0; i < instrument.getStringCount(); i++) {
-            int note = instrument.getSelectedNoteNumber(i);
+        for(Integer note: notes) {
             if(note >= 0) {
                 bits = bits | 1 << Music.getNoteNumber(note - baseNote);
             }

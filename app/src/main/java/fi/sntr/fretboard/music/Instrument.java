@@ -30,10 +30,6 @@ public class Instrument {
         }
     }
 
-    public int getNoteCount() {
-        return fretCount * rootNotes.length;
-    }
-
     public int getNoteNumber(int string, int fret) {
         return Music.getNoteNumber(rootNotes[string] + fret);
     }

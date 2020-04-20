@@ -11,6 +11,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:background="@drawable/chord_note"
+        android:textColor="@color/result_note_text_color"
         android:gravity="center_vertical|center_horizontal"
         android:layout_width="30sp"
         android:layout_height="30sp">
@@ -25,7 +26,7 @@
         android:textSize="12sp"
         app:layout_constraintCircle="@id/note_name_text"
         app:layout_constraintCircleAngle="45"
-        app:layout_constraintCircleRadius="18sp"
+        app:layout_constraintCircleRadius="15sp"
         tools:ignore="MissingConstraints">
 
     </TextView>

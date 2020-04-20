@@ -57,4 +57,8 @@ public class CompareResult implements Comparable<CompareResult> {
     public void setHighlighted(boolean highlighted) {
         isHighlighted = highlighted;
     }
+
+    public boolean equalsChord(int root, int chordId) {
+        return this.chordId == chordId && this.root == root;
+    }
 }

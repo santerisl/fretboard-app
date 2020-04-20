@@ -1,12 +1,12 @@
 package fi.sntr.fretboard.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import fi.sntr.fretboard.R;
@@ -19,9 +19,12 @@ public class ChordNotesAdapter extends RecyclerView.Adapter<ChordNotesAdapter.No
     private CompareResult result;
     private NoteGroup chord;
 
-    public ChordNotesAdapter(CompareResult result) {
+    public ChordNotesAdapter() {}
+
+    public void setResult(CompareResult result) {
         this.result = result;
         chord = Music.CHORDS[result.chordId];
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -34,25 +37,19 @@ public class ChordNotesAdapter extends RecyclerView.Adapter<ChordNotesAdapter.No
 
     @Override
     public void onBindViewHolder(NoteViewHolder holder, int position) {
-        String notename = Music.getNoteName(chord.get(position) + result.root);
-        String intervalname = Music.INTERVALS[chord.get(position)];
-        holder.noteName.setText(notename);
-        holder.intervalName.setText(intervalname);
-        if(result.hasNote(chord.get(position))) {
-            holder.noteName.setTextColor(ContextCompat.getColor(holder.view.getContext(), R.color.colorPrimary));
-        } else {
-            holder.noteName.setTextColor(ContextCompat.getColor(holder.view.getContext(), R.color.colorError));
-        }
+        holder.noteName.setText(Music.getNoteName(chord.get(position) + result.root));
+        holder.intervalName.setText(Music.INTERVALS[chord.get(position)]);
+        holder.noteName.setSelected(result.hasNote(chord.get(position)));
     }
 
     @Override
     public long getItemId(int position) {
-        return position;
+        return chord != null ? chord.get(position) : -1;
     }
 
     @Override
     public int getItemCount() {
-        return chord.getIntervalCount();
+        return result != null ? chord.getIntervalCount() : 0;
     }
 
     static class NoteViewHolder extends RecyclerView.ViewHolder {
@@ -62,9 +59,9 @@ public class ChordNotesAdapter extends RecyclerView.Adapter<ChordNotesAdapter.No
 
         public NoteViewHolder(@NonNull View view) {
             super(view);
+            this.view = view;
             noteName = view.findViewById(R.id.note_name_text);
             intervalName = view.findViewById(R.id.note_interval_text);
-            this.view = view;
         }
     }
 }

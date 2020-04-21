@@ -1,4 +1,4 @@
-package fi.sntr.fretboard;
+package fi.sntr.fretboard.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,10 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import fi.sntr.fretboard.adapters.FretboardAdapter;
+import fi.sntr.fretboard.R;
 import fi.sntr.fretboard.music.Instrument;
 
 
-public class FretboardFragment extends Fragment {
+public class FretboardFragment extends Fragment implements Instrument.InstrumentChangeListener {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView mRecyclerView;
     private GridLayoutManager mGridLayoutManager;
@@ -45,7 +47,7 @@ public class FretboardFragment extends Fragment {
         super.onAttach(context);
     }
 
-    void setInstrument(Instrument instrument) {
+    public void setInstrument(Instrument instrument) {
         mInstrument = instrument;
         if(mAdapter == null) {
             mAdapter = new FretboardAdapter(instrument);
@@ -68,9 +70,31 @@ public class FretboardFragment extends Fragment {
             });
             mRecyclerView.setLayoutManager(mGridLayoutManager);
         }
+        mInstrument.addChangeListener(this);
     }
 
-    public void updateSpanCount() {
+    @Override
+    public void onInstrumentChange() {
         mGridLayoutManager.setSpanCount(mInstrument.getStringCount() * 2 + 1);
+    }
+
+    @Override
+    public void onSelectedChange(int string, int oldFret, int newFret) {
+
+    }
+
+    @Override
+    public void onFretCountChange(int oldFretCount, int newFretCount) {
+
+    }
+
+    @Override
+    public void onIsSharpChange() {
+
+    }
+
+    @Override
+    public void onHighlightChange() {
+
     }
 }

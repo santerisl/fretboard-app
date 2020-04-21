@@ -7,7 +7,7 @@
         <layer-list>
             <item>
                 <shape android:shape="line">
-                    <stroke android:width="2sp" android:color="@color/colorPrimary" />
+                    <stroke android:width="2dp" android:color="@color/colorPrimary" />
                 </shape>
             </item>
             <item>
@@ -17,7 +17,7 @@
                     android:pivotY="50%"
                     android:toDegrees="-90">
                     <shape android:shape="line">
-                        <stroke android:width="2sp" android:color="@color/colorPrimary" />
+                        <stroke android:width="2dp" android:color="@color/colorPrimary" />
                     </shape>
                 </rotate>
             </item>
@@ -26,7 +26,7 @@
 
     <item>
         <shape android:shape="line">
-            <stroke android:width="2sp" android:color="@color/colorError" />
+            <stroke android:width="2dp" android:color="@color/colorError" />
         </shape>
     </item>
 </selector>

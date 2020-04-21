@@ -1,6 +1,5 @@
 package fi.sntr.fretboard.adapters;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,20 +20,21 @@ import fi.sntr.fretboard.music.ChordFinder;
 import fi.sntr.fretboard.music.CompareResult;
 import fi.sntr.fretboard.music.Instrument;
 
+/**
+ * Adapter for displaying a list of ChordResults.
+ */
 public class ChordResultAdapter extends RecyclerView.Adapter<ChordResultAdapter.ResultViewHolder>
     implements Instrument.InstrumentChangeListener {
 
-    private Instrument mInstrument;
+    private final Instrument mInstrument;
 
-    private List<CompareResult> items = new ArrayList<>();
-    private Set<Integer> selected = new HashSet<>();
-    private Set<Integer> previousSelected = new HashSet<>();
+    private final List<CompareResult> items = new ArrayList<>();
+    private final Set<Integer> selected = new HashSet<>();
+    private final Set<Integer> previousSelected = new HashSet<>();
 
     public ChordResultAdapter(Instrument instrument) {
         mInstrument = instrument;
-        mInstrument.setChangeListener(this);
-
-        setHasStableIds(true);
+        mInstrument.addChangeListener(this);
 
         updateSelected();
         updateItems();
@@ -62,7 +62,6 @@ public class ChordResultAdapter extends RecyclerView.Adapter<ChordResultAdapter.
             if(!r.isHighlighted()) {
                 mInstrument.setHighlightRoot(r.root);
                 mInstrument.setHighlightChord(r.chordId);
-
             } else {
                 mInstrument.setHighlightRoot(-1);
                 mInstrument.setHighlightChord(-1);
@@ -75,12 +74,6 @@ public class ChordResultAdapter extends RecyclerView.Adapter<ChordResultAdapter.
         items.addAll(ChordFinder.findChords(selected,
                 mInstrument.getHighlightRoot(),
                 mInstrument.getHighlightChord()));
-    }
-
-    @Override
-    public long getItemId(int position) {
-        CompareResult r = items.get(position);
-        return (r.chordId << 16) | r.root;
     }
 
     @Override
@@ -117,7 +110,7 @@ public class ChordResultAdapter extends RecyclerView.Adapter<ChordResultAdapter.
     public void onFretCountChange(int oldFretCount, int newFretCount) {}
 
     @Override
-    public void onIsSharpChange(boolean isSharp) {}
+    public void onIsSharpChange() {}
 
     @Override
     public void onHighlightChange() {
@@ -126,13 +119,13 @@ public class ChordResultAdapter extends RecyclerView.Adapter<ChordResultAdapter.
     }
 
     static class ResultViewHolder extends RecyclerView.ViewHolder {
-        View view;
-        TextView chordName;
-        RecyclerView notesRecycler;
-        ChordNotesAdapter adapter;
-        Button highlightButton;
+        final View view;
+        final TextView chordName;
+        final RecyclerView notesRecycler;
+        final ChordNotesAdapter adapter;
+        final Button highlightButton;
 
-        public ResultViewHolder(@NonNull View view) {
+        ResultViewHolder(@NonNull View view) {
             super(view);
             this.view = view;
             chordName = view.findViewById(R.id.chord_name_text);

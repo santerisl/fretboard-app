@@ -1,4 +1,4 @@
-package fi.sntr.fretboard;
+package fi.sntr.fretboard.adapters;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,20 +10,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Locale;
+
+import fi.sntr.fretboard.FretButton;
+import fi.sntr.fretboard.R;
 import fi.sntr.fretboard.music.Instrument;
 
+/**
+ * Adapter for displaying instrument data in a RecyclerView
+ */
 public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> implements Instrument.InstrumentChangeListener {
 
     private final Instrument mInstrument;
 
-    public static int TYPE_NUMBER = 1;
-    public static int TYPE_FRET = 2;
+    /** Type integer for fretboard fret numbers */
+    public static final int TYPE_NUMBER = 1;
+
+    /** Type integer for fretboard frets */
+    private static final int TYPE_FRET = 2;
 
     private final int[] accidentalPositions = {1, 3, 6, 8, 10};
 
-    FretboardAdapter(Instrument instrument) {
+    public FretboardAdapter(Instrument instrument) {
         mInstrument = instrument;
-        mInstrument.setChangeListener(this);
+        mInstrument.addChangeListener(this);
     }
 
     @NonNull
@@ -49,12 +59,13 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> implement
         } else {
             final FretViewHolder fH = (FretViewHolder) holder;
             fH.setNoteName(position);
-            fH.mFretButton.setOnClickListener(v -> {
-                mInstrument.setSelected(fH.string, fH.fret);
-            });
+            fH.mFretButton.setOnClickListener(v -> mInstrument.setSelected(fH.string, fH.fret));
         }
     }
 
+    /**
+     * @return true for positions on the first row of the horizontal grid
+     */
     @Override
     public int getItemViewType(int position) {
         if (position % (mInstrument.getStringCount() + 1) == 0) {
@@ -97,7 +108,7 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> implement
     }
 
     @Override
-    public void onIsSharpChange(boolean isSharp) {
+    public void onIsSharpChange() {
         for(int s = 0; s < mInstrument.getStringCount(); s++) {
             for(int f = 0; f < mInstrument.getFretCount(); f++) {
                 int note = mInstrument.getNoteNumber(s, f);
@@ -115,18 +126,34 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> implement
         notifyDataSetChanged();
     }
 
+    /**
+     * @param position position to get string number at
+     * @return gets the string number at the given adapter position
+     */
     private int getString(int position) {
         return position % (mInstrument.getStringCount() + 1) - 1;
     }
 
+    /**
+     * @param position position to get fret number at
+     * @return the fret number at the given adapter position
+     */
     private int getFret(int position) {
         return position / (mInstrument.getStringCount() + 1);
     }
 
+    /**
+     * @param string string of position to get
+     * @param fret fret of position to get
+     * @return the position in the adapter for the given string and fret
+     */
     private int getPosition(int string, int fret) {
         return (string + 1) + (mInstrument.getStringCount() + 1) * fret;
     }
 
+    /**
+     * Holder for fretboard frets
+     */
     class FretViewHolder extends ViewHolder {
         final FretButton mFretButton;
         int string;
@@ -149,6 +176,9 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> implement
         }
     }
 
+    /**
+     * Holder for numbers displayed above fretboard
+     */
     static class NumberViewHolder extends ViewHolder {
         private final TextView mFretNumber;
         NumberViewHolder(View view) {
@@ -157,7 +187,7 @@ public class FretboardAdapter extends RecyclerView.Adapter<ViewHolder> implement
         }
 
         void setNumber(int fretNumber) {
-            mFretNumber.setText(Integer.toString(fretNumber));
+            mFretNumber.setText(String.format(Locale.getDefault(), "%d", fretNumber));
         }
     }
 }

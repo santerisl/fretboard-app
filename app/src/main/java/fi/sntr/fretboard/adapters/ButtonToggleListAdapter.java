@@ -14,19 +14,30 @@ import java.util.List;
 
 import fi.sntr.fretboard.R;
 
+/**
+ * Adapter for a toggleable group of buttons
+ */
 public class ButtonToggleListAdapter<T> extends RecyclerView.Adapter<ButtonToggleListAdapter.ButtonViewHolder> {
 
     private static final int PAYLOAD_TOGGLE = 1;
 
-    private T[] items;
-    private OnItemClickListener mListener;
+    private final T[] items;
+    private final OnItemChangeListener mListener;
     private int selectedPosition = -1;
 
-    public ButtonToggleListAdapter(T[] items, OnItemClickListener listener) {
+    /**
+     * @param items items to add to the adapter
+     * @param listener listener to call on selected item change
+     */
+    public ButtonToggleListAdapter(T[] items, OnItemChangeListener listener) {
         this.items = items;
         mListener = listener;
     }
 
+    /**
+     * Sets the currently selected position
+     * @param selected selected position to set
+     */
     public void setSelected(int selected) {
         this.selectedPosition = selected;
         notifyDataSetChanged();
@@ -60,7 +71,7 @@ public class ButtonToggleListAdapter<T> extends RecyclerView.Adapter<ButtonToggl
     }
 
     @Override
-    public void onBindViewHolder(ButtonViewHolder holder, int position, List<Object> payloads) {
+    public void onBindViewHolder(@NonNull ButtonViewHolder holder, int position, List<Object> payloads) {
         if (!payloads.isEmpty()) {
             for (final Object payload : payloads) {
                 if (payload.equals(PAYLOAD_TOGGLE)) {
@@ -83,15 +94,21 @@ public class ButtonToggleListAdapter<T> extends RecyclerView.Adapter<ButtonToggl
     }
 
     static class ButtonViewHolder extends RecyclerView.ViewHolder {
-        MaterialButton button;
+        final MaterialButton button;
 
-        public ButtonViewHolder(@NonNull View view) {
+        ButtonViewHolder(@NonNull View view) {
             super(view);
             button = view.findViewById(R.id.highlight_button);
         }
     }
 
-    public interface OnItemClickListener {
+    /**
+     * Listener for changes of the currently selected item
+     */
+    public interface OnItemChangeListener {
+        /**
+         * @param position position of selected item, or -1 if none selected
+         */
         void onSelectedChange(int position);
     }
 }

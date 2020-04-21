@@ -1,22 +1,32 @@
 package fi.sntr.fretboard.music;
 
+/**
+ * Holder class for Music related static data
+ */
 public class Music {
 
+    /**
+     * Total count of notes
+     */
     static final int NOTE_COUNT = 12;
 
-    public static final String[] NAMES_SHARP = {
-            "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"
-    };
-
+    /** Note names with the sharp (#) accidental */
     public static final String[] NAMES_FLAT = {
             "C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"
     };
 
-    public static String[] INTERVALS = {
+    /** Note names with the flat (b) accidental */
+    public static final String[] NAMES_SHARP = {
+            "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"
+    };
+
+    /** Interval names with the flat (b) accidental */
+    public static final String[] INTERVALS = {
             "1", "b2", "2", "b3", "3", "4", "b5", "5", "b6", "6", "b7", "7",
             "8", "b9", "9", "b10", "10", "11", "b12", "12", "b13", "13"
     };
 
+    /** Array of chord names and chord note intervals */
     public static final NoteGroup[] CHORDS = {
             new NoteGroup("", 0, 4, 7),
             new NoteGroup("m", 0, 3, 7),
@@ -54,6 +64,7 @@ public class Music {
             new NoteGroup("7b5", 0, 4, 6, 10)
     };
 
+    /** Array of scale names and scale note intervals */
     public static final NoteGroup[] SCALES = {
             new NoteGroup("Chromatic", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11),
             new NoteGroup("Major", 0, 2, 4, 5, 7, 9, 11),
@@ -70,6 +81,10 @@ public class Music {
             new NoteGroup("Minor pentatonic", 0, 3, 5, 7, 10)
     };
 
+    /**
+     * @param n note which number to get
+     * @return the note number in range of 0 to {@link Music#NOTE_COUNT}
+     */
     public static int getNoteNumber(int n) {
         while(n < 0){
             n += NOTE_COUNT;
@@ -77,6 +92,10 @@ public class Music {
         return n % NOTE_COUNT;
     }
 
+    /**
+     * @param note note name to get
+     * @return return the sharp (#) name of the given note
+     */
     public static String getNoteName(int note) {
         return Music.NAMES_SHARP[getNoteNumber(note)];
     }

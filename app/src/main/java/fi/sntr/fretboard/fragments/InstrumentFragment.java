@@ -1,4 +1,4 @@
-package fi.sntr.fretboard.tabs;
+package fi.sntr.fretboard.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,17 +16,28 @@ import android.widget.Button;
 
 import com.google.android.material.button.MaterialButtonToggleGroup;
 
+import java.util.Locale;
+
 import fi.sntr.fretboard.MainActivity;
 import fi.sntr.fretboard.R;
+import fi.sntr.fretboard.dialogs.InstrumentDialog;
+import fi.sntr.fretboard.adapters.InstrumentAdapter;
+import fi.sntr.fretboard.data.Instruments;
 import fi.sntr.fretboard.music.Instrument;
 
-public class InstrumentFragment extends Fragment {
+/**
+ * Fragment for updating instrument fret count, sharp/flat display and selected instrument
+ */
+public class InstrumentFragment extends Fragment implements InstrumentAdapter.OnItemClickListener {
 
+    private Instruments instruments;
     private Instrument mInstrument;
 
     private Button addFretButton;
     private Button removeFretButton;
     private Button fretCountButton;
+
+    private InstrumentAdapter instrumentAdapter;
 
     @Nullable
     @Override
@@ -55,35 +68,36 @@ public class InstrumentFragment extends Fragment {
             }
         });
 
-        MaterialButtonToggleGroup instrumentGroup = view.findViewById(R.id.group_instrument);
-        instrumentGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
-            if(isChecked) {
-                switch (checkedId) {
-                    case R.id.instrument_mandolin:
-                        mInstrument.setRootNotes(4, 9, 2, 7);
-                        break;
-                    case R.id.instrument_guitar:
-                        mInstrument.setRootNotes(4, 11, 7, 2, 9, 4);
-                        break;
-                }
-            }
-        });
+        RecyclerView recycler = view.findViewById(R.id.instrument_recycler);
+
+        instrumentAdapter = new InstrumentAdapter(instruments, this);
+
+        recycler.setAdapter(instrumentAdapter);
+        recycler.setLayoutManager(new LinearLayoutManager(getContext()));
 
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        instrumentAdapter.setSelected(instruments.selectedId);
+    }
+
+
     private void updateFretViews() {
         addFretButton.setEnabled(mInstrument.getFretCount() + 1 <= Instrument.MAX_FRETS);
         removeFretButton.setEnabled(mInstrument.getFretCount() - 1 >= Instrument.MIN_FRETS);
-        fretCountButton.setText(Integer.toString(mInstrument.getFretCount() - 1));
+        fretCountButton.setText(String.format(
+                Locale.getDefault(), "%d", (mInstrument.getFretCount() - 1)));
     }
 
-    public void addFrets(View v) {
+    private void addFrets(View v) {
         mInstrument.setFretCount(mInstrument.getFretCount() + 1);
         updateFretViews();
     }
 
-    public void removeFrets(View v) {
+    private void removeFrets(View v) {
         mInstrument.setFretCount(mInstrument.getFretCount() - 1);
         updateFretViews();
     }
@@ -93,6 +107,19 @@ public class InstrumentFragment extends Fragment {
         super.onAttach(context);
         if(context instanceof MainActivity) {
             mInstrument = ((MainActivity) context).instrument;
+            instruments = ((MainActivity) context).instruments;
         }
+    }
+
+    @Override
+    public void onSelectedChange(int position) {
+        mInstrument.setRootNotes(instruments.get(position).getStrings());
+        instruments.selectedId = position;
+    }
+
+    @Override
+    public void onNewClick() {
+        InstrumentDialog iD = InstrumentDialog.newInstance();
+        iD.show(getChildFragmentManager(), "instrumentDialog");
     }
 }

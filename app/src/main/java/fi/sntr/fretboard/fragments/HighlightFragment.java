@@ -1,4 +1,4 @@
-package fi.sntr.fretboard.tabs;
+package fi.sntr.fretboard.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -16,10 +16,13 @@ import android.view.ViewGroup;
 import fi.sntr.fretboard.MainActivity;
 import fi.sntr.fretboard.R;
 import fi.sntr.fretboard.adapters.ButtonToggleListAdapter;
-import fi.sntr.fretboard.adapters.ButtonToggleListAdapter.OnItemClickListener;
+import fi.sntr.fretboard.adapters.ButtonToggleListAdapter.OnItemChangeListener;
 import fi.sntr.fretboard.music.Instrument;
 import fi.sntr.fretboard.music.Music;
 
+/**
+ * Fragment for selecting fretboard highlights
+ */
 public class HighlightFragment extends Fragment {
 
     private Instrument mInstrument;
@@ -54,7 +57,7 @@ public class HighlightFragment extends Fragment {
         chordAdapter.setSelected(mInstrument.getHighlightChord());
     }
 
-    private <T> ButtonToggleListAdapter createAdapter(RecyclerView recycler, T[] items, OnItemClickListener listener) {
+    private <T> ButtonToggleListAdapter createAdapter(RecyclerView recycler, T[] items, OnItemChangeListener listener) {
         ButtonToggleListAdapter adapter = new ButtonToggleListAdapter<>(items, listener);
         recycler.setAdapter(adapter);
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));

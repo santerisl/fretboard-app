@@ -1,6 +1,17 @@
 <resources>
     <string name="app_name">Fretboard</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="name">Name</string>
+    <string name="add_string">Add string</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="new_instrument">New Instrument</string>
+    <string name="edit">Edit</string>
+    <string name="remove">Remove</string>
+    <string name="root">Root</string>
+    <string name="chord">Chord</string>
+    <string name="scale">Scale</string>
+    <string name="fret_count">Fret count</string>
+    <string name="note_names">Note names</string>
+    <string name="sharp">Sharp</string>
+    <string name="flat">Flat</string>
 </resources>

@@ -4,22 +4,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         app:state_fret_selected="true"
-        android:left="15sp"
-        android:right="15sp"
-        android:top="5sp"
-        android:bottom="5sp">
+        android:left="15dp"
+        android:right="15dp"
+        android:top="5dp"
+        android:bottom="5dp">
         <layer-list>
             <item
-                android:left="15sp"
-                android:right="15sp"
-                android:top="5sp"
-                android:bottom="5sp">
+                android:left="15dp"
+                android:right="15dp"
+                android:top="5dp"
+                android:bottom="5dp">
                 <shape android:shape="oval">
                     <solid
                         android:color="@color/fret_circle_color" />
                     <size
-                        android:height="30sp"
-                        android:width="30sp" />
+                        android:height="30dp"
+                        android:width="30dp" />
                 </shape>
             </item>
         </layer-list>

@@ -13,20 +13,20 @@
         android:background="@drawable/chord_note"
         android:textColor="@color/result_note_text_color"
         android:gravity="center_vertical|center_horizontal"
-        android:layout_width="30sp"
-        android:layout_height="30sp">
+        android:layout_width="30dp"
+        android:layout_height="30dp">
     </TextView>
 
     <TextView
         android:id="@+id/note_interval_text"
-        android:layout_width="20sp"
-        android:layout_height="20sp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:background="@drawable/chord_interval"
         android:gravity="center_vertical|center_horizontal"
         android:textSize="12sp"
         app:layout_constraintCircle="@id/note_name_text"
         app:layout_constraintCircleAngle="45"
-        app:layout_constraintCircleRadius="15sp"
+        app:layout_constraintCircleRadius="15dp"
         tools:ignore="MissingConstraints">
 
     </TextView>

@@ -1,4 +1,4 @@
-package fi.sntr.fretboard.tabs;
+package fi.sntr.fretboard.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -18,6 +18,9 @@ import fi.sntr.fretboard.R;
 import fi.sntr.fretboard.adapters.ChordResultAdapter;
 import fi.sntr.fretboard.music.Instrument;
 
+/**
+ * Fragment for chord comparison results
+ */
 public class ChordsFragment extends Fragment {
 
     private Instrument mInstrument;

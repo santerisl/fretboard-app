@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minWidth="40sp"
+    android:minWidth="40dp"
     android:id="@+id/result_view"
     android:elevation="2dp"
     android:layout_margin="8dp"
@@ -25,7 +25,7 @@
         android:id="@+id/notes_recycler"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8sp"
+        android:layout_marginStart="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chord_name_text" />
@@ -36,6 +36,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/chord_name_text"
-        android:layout_width="32sp"
-        android:layout_height="32sp" />
+        android:layout_width="32dp"
+        android:layout_height="32dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

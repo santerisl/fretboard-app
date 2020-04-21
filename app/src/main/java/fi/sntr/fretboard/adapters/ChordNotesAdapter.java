@@ -1,6 +1,5 @@
 package fi.sntr.fretboard.adapters;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,9 @@ import fi.sntr.fretboard.music.CompareResult;
 import fi.sntr.fretboard.music.Music;
 import fi.sntr.fretboard.music.NoteGroup;
 
+/**
+ * Adapter for displaying a list of notes found or not found in a ChordResult
+ */
 public class ChordNotesAdapter extends RecyclerView.Adapter<ChordNotesAdapter.NoteViewHolder> {
 
     private CompareResult result;
@@ -53,13 +55,11 @@ public class ChordNotesAdapter extends RecyclerView.Adapter<ChordNotesAdapter.No
     }
 
     static class NoteViewHolder extends RecyclerView.ViewHolder {
-        TextView noteName;
-        TextView intervalName;
-        View view;
+        final TextView noteName;
+        final TextView intervalName;
 
-        public NoteViewHolder(@NonNull View view) {
+        NoteViewHolder(@NonNull View view) {
             super(view);
-            this.view = view;
             noteName = view.findViewById(R.id.note_name_text);
             intervalName = view.findViewById(R.id.note_interval_text);
         }

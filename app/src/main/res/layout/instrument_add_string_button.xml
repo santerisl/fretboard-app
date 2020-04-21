@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.button.MaterialButton
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-    android:checkable="true"
-    android:id="@+id/highlight_button"
+    android:id="@+id/add_string_button"
     android:textAllCaps="false"
-    android:insetBottom="0dp"
-    android:insetTop="0dp"
-    app:cornerRadius="0dp"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 </com.google.android.material.button.MaterialButton>

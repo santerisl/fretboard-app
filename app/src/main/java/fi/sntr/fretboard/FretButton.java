@@ -8,9 +8,12 @@ import androidx.appcompat.widget.AppCompatButton;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Custom button for fretboard with three different extra states
+ */
 public class FretButton extends AppCompatButton {
 
-    private Set<Integer> states = new HashSet<>();
+    private final Set<Integer> states = new HashSet<>();
 
     public FretButton(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -29,14 +32,23 @@ public class FretButton extends AppCompatButton {
         }
     }
 
+    /**
+     * @param value value to set fret selected state to
+     */
     public void setFretSelected(boolean value) {
         updateState(R.attr.state_fret_selected, value);
     }
 
+    /**
+     * @param value value to set fret highlighted chord state to
+     */
     public void setFretHighlightedChord(boolean value) {
         updateState(R.attr.state_fret_highlighted_chord, value);
     }
 
+    /**
+     * @param value value to set fret highlighted scale state to
+     */
     public void setFretHighlightedScale(boolean value) {
         updateState(R.attr.state_fret_highlighted_scale, value);
     }
